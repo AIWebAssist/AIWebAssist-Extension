@@ -8,23 +8,25 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
 
     steps:
-      - name: Easy Zip Files
-        uses: vimtor/action-zip@v1.1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Zip Files
+        run: |
+          zip -r extension.zip extension/
+        working-directory: ${{ github.workspace }}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         with:
-          # Files or directories to zip
-          files: extension
-          # Name of output zip file
-          dest: extension.zip
-          # Whether to add subdirectories to simply zip all files to the root
-          recursive: true
-      # - name: Commit and push changes
-      #   run: |
-      #     git config --local user.email "actions@github.com"
-      #     git config --local user.name "GitHub Actions"
-      #     git add extension.zip
-      #     git commit -m "Auto-commit by GitHub Actions"
-      #     git push
+          files: extension.zip
+          tag_name: latest 
+          release_name: latest
+          draft: false
+          prerelease: false
+
+      - name: Publish Release
+        run: echo "Released ${{ steps.create_release.outputs.upload_url }}"
