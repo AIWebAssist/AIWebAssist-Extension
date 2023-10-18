@@ -25,6 +25,6 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add .
+          git add extension.zip
           git commit -m "Auto-commit by GitHub Actions"
           git push
