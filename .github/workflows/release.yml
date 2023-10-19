@@ -31,4 +31,4 @@ jobs:
           artifacts: "extension.zip"
           tag: ${{ steps.tag_version.outputs.new_tag  }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          makeLatest: false
+          draft: true
