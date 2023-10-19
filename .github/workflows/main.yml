@@ -8,7 +8,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,15 +17,8 @@ jobs:
           zip -r extension.zip extension/
         working-directory: ${{ github.workspace }}
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Upload Release
+        uses: ncipollo/release-action@v1.12.0
         with:
-          files: extension.zip
-          tag_name: latest 
-          release_name: latest
-          draft: false
-          prerelease: false
-
-      - name: Publish Release
-        run: echo "Released ${{ steps.create_release.outputs.upload_url }}"
+          artifacts: "extension.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
