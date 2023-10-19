@@ -1,4 +1,4 @@
-name: Zip extension
+name: Zip Release
 
 on:
   push:
