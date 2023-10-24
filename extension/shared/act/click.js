@@ -1,10 +1,10 @@
-function click_coordinates(x,y){
+function click_on_coordinates(x,y){
     var element = document.elementFromPoint(x, y);
     // Click on the element
     element.click();
 };
 
- function click_coordinates_and_text(x,y,text){
+function click_on_coordinates_and_text(x,y,text){
     var element = document.elementFromPoint(x, y);
 
     // Click on the element
@@ -32,4 +32,4 @@ function keyborad_action(text){
     }
 }
 
-module.exports = {click_coordinates,click_coordinates_and_text,keyborad_action};
+export {click_on_coordinates,click_on_coordinates_and_text,keyborad_action};

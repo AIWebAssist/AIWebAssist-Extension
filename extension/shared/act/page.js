@@ -2,12 +2,12 @@ function refresh(){
     location.reload();
 }
 
-function back(){
+function go_back(){
     window.history.back();
 }
 
- function move_to_url(url){
+function move_to_url(url){
     window.location.href = url;
 }
 
-module.exports = {move_to_url,back,refresh};
+export {move_to_url,go_back,refresh};

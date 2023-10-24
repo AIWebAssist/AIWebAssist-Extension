@@ -37,6 +37,9 @@ function call_guide(function_name,args){
     else if (function_name == "scroll_right"){
         return point_scroll_right()
     }
+    else if (function_name == "server_fail"){
+        return show_text("Service is down.")
+    }
     else{
         throw new Error('function '+function_name+" is not defined.");
     }
@@ -76,26 +79,26 @@ async function call_extract(function_name){
 
 }
 
-import {keyborad_action,click_coordinates_and_text,click_coordinates} from './act/click.js'
-import {refresh,back,move_to_url} from './act/page.js'
-import {scroll_down,scroll_up,scroll_right,scroll_left} from './act/scroll.js'
+import {click_on_coordinates,click_on_coordinates_and_text,keyborad_action} from './act/click.js'
+import {scroll_left,scroll_up,scroll_right,scroll_down} from './act/scroll.js'
+import {move_to_url,go_back,refresh} from './act/page.js'
 
 
 async function call_act(function_name,args){
     if (function_name == "back"){
-        return back() 
+        return go_back() 
     }
     else if (function_name == "refresh"){
         return refresh()
     }
     else if (function_name == "click_coordinates_add_text"){
-        return click_coordinates_and_text(args.x,args.y,args.text)
+        return click_on_coordinates_and_text(args.x,args.y,args.text)
     }
     else if (function_name == "keyborad_action"){
         return keyborad_action(args.text)
     }
     else if (function_name == "click_coordinates"){
-        return click_coordinates(args.x,args.y)
+        return click_on_coordinates(args.x,args.y)
     }
     else if (function_name == "go_to_url"){
         return move_to_url(args.text)
