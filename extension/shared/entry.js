@@ -89,7 +89,7 @@ async function call_act(function_name,args){
         return refresh()
     }
     else if (function_name == "click_coordinates_add_text"){
-        return click_coordinates_and_text(args.x,args.y,args.text)
+        return click_on_coordinates_and_text(args.x,args.y,args.text)
     }
     else if (function_name == "keyborad_action"){
         return keyborad_action(args.text)
