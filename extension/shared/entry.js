@@ -76,9 +76,9 @@ async function call_extract(function_name){
 
 }
 
-import {keyborad_action,click_coordinates_and_text,click_coordinates} from './act/click.js'
-import {refresh,back,move_to_url} from './act/page.js'
-import {scroll_down,scroll_up,scroll_right,scroll_left} from './act/scroll.js'
+import {click_coordinates,click_coordinates_and_text,keyborad_action} from './act/click.js'
+import {move_to_url,back,refresh} from './act/page.js'
+import {scroll_left,scroll_up,scroll_right,scroll_down} from './act/scroll.js'
 
 
 async function call_act(function_name,args){
