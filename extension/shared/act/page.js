@@ -2,7 +2,7 @@ function refresh(){
     location.reload();
 }
 
-function back(){
+function go_back(){
     window.history.back();
 }
 

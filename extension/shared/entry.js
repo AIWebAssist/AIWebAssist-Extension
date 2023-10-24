@@ -78,12 +78,12 @@ async function call_extract(function_name){
 
 import {click_coordinates,click_coordinates_and_text,keyborad_action} from './act/click.js'
 import {scroll_left,scroll_up,scroll_right,scroll_down} from './act/scroll.js'
-import {move_to_url,back,refresh} from './act/page.js'
+import {move_to_url,go_back,refresh} from './act/page.js'
 
 
 async function call_act(function_name,args){
     if (function_name == "back"){
-        return back() 
+        return go_back() 
     }
     else if (function_name == "refresh"){
         return refresh()
