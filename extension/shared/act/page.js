@@ -6,7 +6,7 @@ function back(){
     window.history.back();
 }
 
- function move_to_url(url){
+function move_to_url(url){
     window.location.href = url;
 }
 
