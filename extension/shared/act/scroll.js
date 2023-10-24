@@ -1,5 +1,3 @@
-
-
 function scroll_down(){
     // Get the height of the entire page
     var pageHeight = document.body.scrollHeight;
