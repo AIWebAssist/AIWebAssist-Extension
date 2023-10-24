@@ -47,4 +47,4 @@ function scroll_left(){
     window.scrollBy(-scrollDistance, 0);
 }
 
-module.exports = {scroll_left,scroll_up,scroll_right,scroll_down};
+export {scroll_left,scroll_up,scroll_right,scroll_down};

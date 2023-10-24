@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log('submit event dispatched');
     e.preventDefault();
     submitButton.setAttribute("disabled", true);
+    errorEl.textContent = ""
     
     const currentTab = await getCurrentTab();
     console.log('currentTab='+currentTab)
@@ -86,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       } catch (e) {
           console.log(e.message)
-          errorEl.innerText = `Extracting failed, Error: ${e.message}.`;
+          errorEl.textContent  = `Extracting failed, Error: ${e.message}.`;
       }
 
 
@@ -101,17 +102,29 @@ document.addEventListener("DOMContentLoaded", function () {
             body,
           });
           command = await res.json();
-          //command = JSON.parse(commandResponse);
         } catch (e) {
-          command = {"example_script":"show_text",'tool_input':{"text":"server is down"}}
+          command = {"script":"server_fail",'tool_input':{}}
+          errorEl.textContent  = `Calling backend failed, Error: ${e.message}.`;
         }
       
-        chrome.tabs.sendMessage(tabId, {
-          message: "run_command",
-          active: active == true,
-          script: command.example_script,
-          args: command.tool_input, 
-        });
+        
+
+        if (command.hasOwnProperty("script") | command.hasOwnProperty("tool_input")) {
+          try{
+            chrome.tabs.sendMessage(tabId, {
+              message: "run_command",
+              active: active == true,
+              script: command.script,
+              args: command.tool_input, 
+            });
+          } catch (e){
+            errorEl.textContent  = `Executing guidance failed, Error: ${e.message}.`;
+          }
+        }
+        else{
+            console.error("response is corrupted.")
+        }
+        
     }
     
     submitButton.removeAttribute("disabled");
@@ -119,5 +132,3 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
-
-module.exports = {getCurrentTab};

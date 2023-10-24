@@ -32,4 +32,4 @@ function keyborad_action(text){
     }
 }
 
-module.exports = {click_on_coordinates,click_on_coordinates_and_text,keyborad_action};
+export {click_on_coordinates,click_on_coordinates_and_text,keyborad_action};

@@ -37,6 +37,9 @@ function call_guide(function_name,args){
     else if (function_name == "scroll_right"){
         return point_scroll_right()
     }
+    else if (function_name == "server_fail"){
+        return show_text("Service is down.")
+    }
     else{
         throw new Error('function '+function_name+" is not defined.");
     }
