@@ -76,7 +76,7 @@ async function call_extract(function_name){
 
 }
 
-import {click_coordinates,click_coordinates_and_text,keyborad_action} from './act/click.js'
+import {click_on_coordinates,click_on_coordinates_and_text,keyborad_action} from './act/click.js'
 import {scroll_left,scroll_up,scroll_right,scroll_down} from './act/scroll.js'
 import {move_to_url,go_back,refresh} from './act/page.js'
 
@@ -95,7 +95,7 @@ async function call_act(function_name,args){
         return keyborad_action(args.text)
     }
     else if (function_name == "click_coordinates"){
-        return click_coordinates(args.x,args.y)
+        return click_on_coordinates(args.x,args.y)
     }
     else if (function_name == "go_to_url"){
         return move_to_url(args.text)
