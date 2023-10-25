@@ -1,4 +1,4 @@
-export default function getScrolWidthInfo() {
+export default async function getScrolWidthInfo() {
   return new Promise((resolve, reject) => {
     const initialScrollPosition = window.pageXOffset;
     let res = ""
