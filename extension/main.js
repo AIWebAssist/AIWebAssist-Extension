@@ -11,9 +11,11 @@ const populateTabsDropdown = async () => {
     });
 
     // Set the last tab as the default option
-    const lastTab = await chrome.tabs.query({active: true, lastFocusedWindow: true }); 
+    const lastTab = await chrome.tabs.query({active: true,
+      currentWindow: false,}); 
     if (lastTab) {
       tabsDropdown.value = lastTab.id;
+      tabsDropdown.text = lastTab.title;
     }
   } catch (e) {
     console.error(e);
