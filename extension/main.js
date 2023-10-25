@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     const tabsDropdown = document.getElementById("tabs-dropdown");
     const tabId = tabsDropdown.value;
-    console.log("Selected Tab ID: " + selectedTabId);
+    console.log("Selected Tab ID: " + tabId);
 
     const objective = objectiveInput.value;
     let body = undefined;
