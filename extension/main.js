@@ -11,7 +11,7 @@ const populateTabsDropdown = async () => {
     });
 
     // Set the last tab as the default option
-    const lastTab = tabs[tabs.length - 1];
+    const lastTab = tabs[tabs.length - 2];
     if (lastTab) {
       tabsDropdown.value = lastTab.id;
     }
