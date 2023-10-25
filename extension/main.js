@@ -1,19 +1,30 @@
-const getCurrentTab = async () => {
+const populateTabsDropdown = async () => {
+  const tabsDropdown = document.getElementById("tabs-dropdown");
+
   try {
-      let [tab] = await chrome.tabs.query({
-        active: true,
-        currentWindow: false,
-      });
-    return tab;
+    const tabs = await chrome.tabs.query({});
+    tabs.forEach(tab => {
+      const option = document.createElement("option");
+      option.value = tab.id;
+      option.text = tab.title;
+      tabsDropdown.appendChild(option);
+    });
+
+    // Set the last tab as the default option
+    const lastTab = tabs[tabs.length - 1];
+    if (lastTab) {
+      tabsDropdown.value = lastTab.id;
+    }
   } catch (e) {
     console.error(e);
-    return null;
   }
 };
 
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   console.log('DOMContentLoaded event dispatched');
+  // Populate the tabs dropdown when the document is loaded
+  await populateTabsDropdown();
   const form = document.getElementById("objective-form");
   const objectiveInput = document.getElementById("objective");
   const submitButton = document.getElementById("submit");
@@ -27,16 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
     submitButton.setAttribute("disabled", true);
     errorEl.textContent = ""
     
-    const currentTab = await getCurrentTab();
-    console.log('currentTab='+currentTab)
+    const tabsDropdown = document.getElementById("tabs-dropdown");
+    const tabId = tabsDropdown.value;
+    console.log("Selected Tab ID: " + selectedTabId);
 
-    if (!currentTab) {
-      errorEl.innerHTML =
-        "BrowseGPT extension could not access a tab. Try closing and re-launching the extension.";
-      return;
-    }
-
-    const tabId = currentTab.id;
     const objective = objectiveInput.value;
     let body = undefined;
 
