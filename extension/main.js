@@ -45,8 +45,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const objective = objectiveInput.value;
     let body = undefined;
 
-    try{
-        debugger;
+    try{s
         const elements = await chrome.tabs.sendMessage(tabId, {
           message: "extract",
           script: "elements",
