@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (body != undefined){
       let command = {}
       try{
-          #const localHost = process.env.HOST || "localhost"; // "localhost" is the default if LOCAL_HOST is not set
+          //const localHost = process.env.HOST || "localhost"; // "localhost" is the default if LOCAL_HOST is not set
           const res = await fetch(`http://scrape_anything:3000/process`, {
             method: "POST",
             headers: {
