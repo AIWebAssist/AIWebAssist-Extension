@@ -92,7 +92,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
       } catch (e) {
           console.log(e.message)
-          errorEl.textContent  = `Extracting failed, Error: ${e.message}.`;
+
+          if (e.message.includes("Could not establish connection. Receiving end does not exist.")){
+            errorEl.textContent  = `Please refresh the selected tab before continuing.`;
+          }
+          else{
+            errorEl.textContent  = `Extracting failed, Error: ${e.message}.`;
+          }
       }
 
 
