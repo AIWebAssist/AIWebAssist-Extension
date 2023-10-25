@@ -26,7 +26,7 @@ jobs:
       - name: Log Version
         run: echo ${{ steps.tag_version.outputs.new_tag }}
       - name: Create CRX
-      - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
+        uses: cardinalby/webext-buildtools-chrome-crx-action@v2
         with:
           # zip file made at the packExtensionDir step
           zipFilePath: 'extension.zip'
