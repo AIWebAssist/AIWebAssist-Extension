@@ -25,17 +25,26 @@ jobs:
           
       - name: Log Version
         run: echo ${{ steps.tag_version.outputs.new_tag }}
-      - name: Create CRX
-        uses: cardinalby/webext-buildtools-chrome-crx-action@v2
-        with:
-          # zip file made at the packExtensionDir step
-          zipFilePath: 'extension.zip'
-          crxFilePath: 'extension.crx'
-          privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
+      # - name: Create CRX
+      #   uses: cardinalby/webext-buildtools-chrome-crx-action@v2
+      #   with:
+      #     # zip file made at the packExtensionDir step
+      #     zipFilePath: 'extension.zip'
+      #     crxFilePath: 'extension.crx'
+      #     privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
       - name: Upload Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: "extension.zip,extension.crx"
+          artifacts: "extension.zip"
           tag: ${{ steps.tag_version.outputs.new_tag  }}
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
+      - name: Upload & release
+        uses: mnao305/chrome-extension-upload@v4.0.1
+        with:
+          file-path: extension.zip
+          extension-id: dicmckdpjpagngabbhhlbahoicjabmoe
+          client-id: ${{ secrets.CLIENT_ID }}
+          client-secret: ${{ secrets.CLIENT_SECRET }}
+          refresh-token: ${{ secrets.REFRESH_TOKEN }}
+          publish: false
