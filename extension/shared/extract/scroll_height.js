@@ -1,44 +1,20 @@
-export default async function getScrollHeightInfo() {
+export default function getScrollHeightInfo() {
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const documentHeight = Math.max(
+    document.body.scrollHeight, document.body.offsetHeight,
+    document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight
+  );
 
-  return new Promise((resolve, reject) => {
-  const initialScrollPosition = window.pageYOffset;
-  // Scroll down a bit
-  window.scrollBy(0, 100);
+  const isScrollbarAtTop = window.scrollY === 0;
+  const isScrollbarAtBottom = documentHeight - viewportHeight === window.scrollY;
 
-  // Wait for a brief moment
-  setTimeout(function() {
-    const scrollDownPosition = window.pageYOffset;
-
-    // Scroll back to the initial position
-    window.scrollTo(0, initialScrollPosition);
-
-    // Wait for a brief moment
-    setTimeout(function() {
-      // Scroll up a bit
-      window.scrollBy(0, -100);
-
-      // Wait for a brief moment
-      setTimeout(function() {
-        const scrollUpPosition = window.pageYOffset;
-
-        // Scroll back to the initial position
-        window.scrollTo(0, initialScrollPosition);
-        
-        let res = ""
-        // Compare the scroll positions
-        if (scrollDownPosition > initialScrollPosition && scrollUpPosition < initialScrollPosition) {
-          res = "Client can scroll both up and down!";
-        } else if (scrollDownPosition > initialScrollPosition) {
-          res = "Client can scroll down!";
-        } else if (scrollUpPosition < initialScrollPosition) {
-          res = "Client can scroll up!";
-        } else {
-          res = "Client cannot scroll either up or down!";
-        }
-        resolve(res);
-      }, 1000); // Wait for a brief moment
-    }, 1000); // Wait for a brief moment
-  }, 1000); // Wait for a brief moment
-  });
+  if (isScrollbarAtTop && isScrollbarAtBottom) {
+    return "The webpage content fits the viewport, and there is no need to scroll.";
+  } else if (isScrollbarAtTop) {
+    return "The scrollbar is at the top of the page, but there is more content to scroll up.";
+  } else if (isScrollbarAtBottom) {
+    return "The scrollbar is at the bottom of the page, and there is no more content to scroll down to.";
+  } else {
+    return "The webpage is scrollable, and there is content in both directions.";
+  }
 }
-// console.log(getScrollHeightInfo());

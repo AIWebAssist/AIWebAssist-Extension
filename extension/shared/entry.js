@@ -65,10 +65,10 @@ async function call_extract(function_name){
         return getWindowSize()
     }
     else if (function_name == "scroll_height"){
-        return await getScrollHeightInfo()
+        return getScrollHeightInfo()
     }
     else if (function_name == "scroll_width"){
-        return await getScrolWidthInfo()
+        return getScrolWidthInfo()
     }
     else if (function_name == "window"){
         return get_viewpoint()
