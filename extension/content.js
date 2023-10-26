@@ -22,6 +22,10 @@ export function main() {
       console.log("Running extraction script: "+req.script+" with args: "+req.args);
       call_extract(req.script).then(response => {
           console.log("Response from script " + req.script + " is: " + response);
+          if (typeof response === 'undefined') {
+            console.error("Response from script"+req.script+" is undefined.");
+            response = "MISSING"
+          }
           sendResponse(response);
           console.log("sent")
         });
