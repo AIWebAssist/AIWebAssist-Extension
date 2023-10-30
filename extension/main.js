@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     if (body != undefined){
-      let command = {}
+      let command = undefined;
       try{
           //const localHost = process.env.HOST || "localhost"; // "localhost" is the default if LOCAL_HOST is not set
           const res = await fetch(`http://scrape_anything:3000/process`, {
@@ -113,28 +113,34 @@ document.addEventListener("DOMContentLoaded", async function () {
             },
             body,
           });
-          command = await res.json();
+          if (res.status != 200) {
+            // Handle the not 200 error case here
+            errorEl.textContent = `Internal Server Error ${e.message}`;
+          } else {
+            // If the response is not a 500 error, proceed as normal
+            command = await res.json();
+          }
         } catch (e) {
           command = {"script":"server_fail",'tool_input':{}}
           errorEl.textContent  = `Calling backend failed, Error: ${e.message}.`;
         }
       
-        
-
-        if (command.hasOwnProperty("script") | command.hasOwnProperty("tool_input")) {
-          try{
-            chrome.tabs.sendMessage(tabId, {
-              message: "run_command",
-              active: active == true,
-              script: command.script,
-              args: command.tool_input, 
-            });
-          } catch (e){
-            errorEl.textContent  = `Executing guidance failed, Error: ${e.message}.`;
+        if (command != undefined){
+          if (command.hasOwnProperty("script") | command.hasOwnProperty("tool_input")) {
+            try{
+              chrome.tabs.sendMessage(tabId, {
+                message: "run_command",
+                active: active == true,
+                script: command.script,
+                args: command.tool_input, 
+              });
+            } catch (e){
+              errorEl.textContent  = `Executing guidance failed, Error: ${e.message}.`;
+            }
           }
-        }
-        else{
-            console.error("response is corrupted.")
+          else{
+              console.error("response is corrupted.")
+          }
         }
         
     }
