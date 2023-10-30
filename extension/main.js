@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     if (body != undefined){
-      let command = null;
+      let command = undefined;
       try{
           //const localHost = process.env.HOST || "localhost"; // "localhost" is the default if LOCAL_HOST is not set
           const res = await fetch(`http://scrape_anything:3000/process`, {
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           errorEl.textContent  = `Calling backend failed, Error: ${e.message}.`;
         }
       
-        if (command != null){
+        if (command != undefined){
           if (command.hasOwnProperty("script") | command.hasOwnProperty("tool_input")) {
             try{
               chrome.tabs.sendMessage(tabId, {
