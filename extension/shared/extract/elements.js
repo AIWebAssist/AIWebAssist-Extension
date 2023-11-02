@@ -8,6 +8,12 @@ export default function get_elements(){
       }
       return '';
     }
+  function cleanCsvTags(element) {
+      if (element === undefined){
+       return "";
+      }
+      return element.trim().replaceAll(",","<comma>").replaceAll("\n","<new_line>")
+    }
     
     // Get all elements in the HTML page
     const elements = document.getElementsByTagName('*');
@@ -44,14 +50,14 @@ export default function get_elements(){
       const elementInfo = {
         element: element,
         rect: rect,
-        textContent: textContent !== undefined ? textContent.trim().replaceAll(",",";"): "",
-        ariaLabel: ariaLabel.replaceAll(",",";"),
-        tooltip: tooltip.replaceAll(",",";"),
-        e_type: e_type  !== undefined ? e_type.replaceAll(",",";"): "",
-        data_initial_value: data_initial_value.replaceAll(",",";"),
-        innerText: innerText !== undefined ? innerText.replaceAll(",",";"): "",
-        parent_xpath : getXPath(element.parentElement),
-        cursor : window.getComputedStyle(element).cursor,
+        textContent: cleanCsvTags(textContent),
+        ariaLabel: cleanCsvTags(ariaLabel),
+        tooltip: cleanCsvTags(tooltip),
+        e_type: cleanCsvTags(e_type),
+        data_initial_value: cleanCsvTags(data_initial_value),
+        innerText: cleanCsvTags(innerText),
+        parent_xpath : cleanCsvTags(getXPath(element.parentElement)),
+        cursor : cleanCsvTags(window.getComputedStyle(element).cursor),
         onclick_no_null: (element.onclick != null)
     
       };
