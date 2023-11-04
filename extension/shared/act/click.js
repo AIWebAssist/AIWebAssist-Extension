@@ -10,8 +10,17 @@ function click_on_coordinates_and_text(x,y,text){
     // Click on the element
     element.click();
     
-    // Enter text into the input field
-    element.value = text; // Assuming element is an input field
+    // https://stackoverflow.com/questions/64553720/how-to-send-a-word-as-a-keypress-event-in-javascript-without-jquery
+    var instr = '';
+    for (let chr of text){                    
+        instr += chr;
+        let iei = { inputType:'insertText', data:instr, bubbles: true};
+                        
+        element.value = instr;
+        iev = new InputEvent('input',iei);
+        element.dispatchEvent(iev);
+                    
+    }
 };
 
 
