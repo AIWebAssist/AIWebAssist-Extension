@@ -11,7 +11,7 @@ export function main() {
       //  present the user a guidance 
       console.log("Running command script: "+req.script+" with args: "+JSON.stringify(req.args));
       execute_function(req.script,req.args).then(response => {
-        console.log("Response from script " + req.script + " is: " + response);
+        console.log("Response from script " + req.script + " execution status: " + response);
 
         sendResponse(response);
         console.log("sent")
