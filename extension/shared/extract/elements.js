@@ -8,6 +8,13 @@ export default function get_elements(){
       }
       return '';
     }
+
+  function isOnTop(element){
+    return element.checkVisibility({
+        checkOpacity: true,      // Check CSS opacity property too
+        checkVisibilityCSS: true // Check CSS visibility property too
+    });
+   }
   function cleanCsvTags(element) {
       if (element === undefined){
        return "";
@@ -61,8 +68,8 @@ export default function get_elements(){
         onclick_no_null: (element.onclick != null)
     
       };
-    
-      if (elementInfo.rect !== undefined){
+      
+      if (elementInfo.rect !== undefined && isOnTop(element)){
       elementDetails.push(elementInfo)
       }
     
@@ -71,4 +78,3 @@ export default function get_elements(){
     const response = "centerX,centerY,ElementType,textContent,TooltipValue,AriaLabel,data-initial-value,innerText,parent_xpath,height,width,top,bottom,left,right,cursor,onclick_no_null\n"+elementDetails.map( e=> (e.rect.left + (e.rect.width / 2))+","+(e.rect.top + (e.rect.height / 2))+","+e.e_type+","+e.textContent+","+e.tooltip+","+e.ariaLabel+","+e.data_initial_value+","+e.innerText+","+e.parent_xpath+","+e.rect.height+","+e.rect.width+","+e.rect.top+","+e.rect.bottom+","+e.rect.left+","+e.rect.right+","+e.cursor+","+e.onclick_no_null).join("\n")
     return response;
 };
-//console.logs(get_elements())
