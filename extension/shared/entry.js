@@ -7,6 +7,7 @@ import point_scroll_right from './guide/scroll_right.js'
 import show_text from './guide/show_text.js'
 
 async function call_guide(function_name,args){
+    console.log("calling guide.")
     if (function_name == "back"){
         return show_text("Please go back a page"); 
     }
@@ -85,6 +86,7 @@ import {move_to_url,go_back,refresh} from './act/page.js'
 
 
 async function call_act(function_name,args){
+    console.log("calling acting.")
     if (function_name == "back"){
         return go_back() 
     }
