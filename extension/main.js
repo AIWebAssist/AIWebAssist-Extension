@@ -28,11 +28,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   const form = document.getElementById("objective-form");
   const objectiveInput = document.getElementById("objective");
   const submitButton = document.getElementById("submit");
-  const active = document.getElementsByClassName("switch");
+  const active = document.getElementById("myCheckbox");
   const errorEl = document.getElementById("error");
   let is_active = false;
   active.addEventListener("change", function() {
-    if (checkbox.checked) {
+    if (active.checked) {
       is_active = true;
     } else {
       is_active = false;
