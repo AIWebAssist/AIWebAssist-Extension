@@ -9,17 +9,18 @@ export function main() {
         execute_function = call_act
       }
       //  present the user a guidance 
-      console.log("Running command script: "+req.script+" with args: "+req.args);
-      var response = execute_function(req.script,req.args);
-      console.log("Response from script"+req.script+" is: "+response);
-      sendResponse({
-      response
+      console.log("Running command script: "+req.script+" with args: "+JSON.stringify(req.args));
+      execute_function(req.script,req.args).then(response => {
+        console.log("Response from script " + req.script + " is: " + response);
+
+        sendResponse(response);
+        console.log("sent")
       });
       
     } else if (req.message === "extract") {
 
       // get information about the screen
-      console.log("Running extraction script: "+req.script+" with args: "+req.args);
+      console.log("Running extraction script: "+req.script+" with args: "+JSON.stringify(req.args));
       call_extract(req.script).then(response => {
           console.log("Response from script " + req.script + " is: " + response);
           if (typeof response === 'undefined') {
