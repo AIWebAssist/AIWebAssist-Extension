@@ -28,9 +28,16 @@ document.addEventListener("DOMContentLoaded", async function () {
   const form = document.getElementById("objective-form");
   const objectiveInput = document.getElementById("objective");
   const submitButton = document.getElementById("submit");
-  const active = document.getElementById("switch");
+  const active = document.getElementsByClassName("switch");
   const errorEl = document.getElementById("error");
-
+  let is_active = false;
+  active.addEventListener("change", function() {
+    if (checkbox.checked) {
+      is_active = true;
+    } else {
+      is_active = false;
+    }
+  });
 
   form.addEventListener("submit", async (e) => {
     console.log('submit event dispatched');
@@ -130,7 +137,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             try{
               chrome.tabs.sendMessage(tabId, {
                 message: "run_command",
-                active: active == true,
+                active: is_active,
                 script: command.script,
                 args: command.tool_input, 
               });
