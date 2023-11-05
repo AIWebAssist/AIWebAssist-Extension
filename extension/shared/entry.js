@@ -6,7 +6,7 @@ import point_scroll_left from './guide/scroll_left.js'
 import point_scroll_right from './guide/scroll_right.js'
 import show_text from './guide/show_text.js'
 
-function call_guide(function_name,args){
+async function call_guide(function_name,args){
     if (function_name == "back"){
         return show_text("Please go back a page"); 
     }
