@@ -20,7 +20,7 @@ function click_on_coordinates_and_text(x,y,text){
         let iei = { inputType:'insertText', data:instr, bubbles: true};
                         
         element.value = instr;
-        iev = new InputEvent('input',iei);
+        let iev = new InputEvent('input',iei);
         element.dispatchEvent(iev);
                     
     }
