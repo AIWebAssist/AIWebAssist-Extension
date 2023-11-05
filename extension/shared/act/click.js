@@ -7,6 +7,7 @@ function click_on_coordinates(x,y){
 };
 
 function click_on_coordinates_and_text(x,y,text){
+    console.log("x="+x+",y="+y+",text="+text)
     var element = document.elementFromPoint(x, y);
 
     // Click on the element
