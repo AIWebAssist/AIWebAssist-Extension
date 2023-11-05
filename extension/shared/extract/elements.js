@@ -1,4 +1,4 @@
-function get_elements(){
+export default function get_elements(){
   function getXPath(element) {
       if (element && element.nodeType === Node.ELEMENT_NODE) {
         const idx = Array.from(element.parentNode.children).indexOf(element) + 1;
