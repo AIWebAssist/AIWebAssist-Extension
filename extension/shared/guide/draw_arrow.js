@@ -41,4 +41,5 @@ export default function draw_arrow(text,x,y){
     indicatorContainer.style.top = y+`px`; // Use the provided y coordinate
     indicatorContainer.style.left = x+`px`; // Use the provided x coordinate
     setTimeout(removeIndicator, 3000); // Adjust the delay as needed
+    return true;
 };

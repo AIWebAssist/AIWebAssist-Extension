@@ -41,4 +41,5 @@ export default  function go_to_url(url){
 
     // Set a timeout to remove the indicator
     setTimeout(removeIndicator, 7000); // Adjust the delay as needed
+    return true;
 };

@@ -2,6 +2,8 @@ function click_on_coordinates(x,y){
     var element = document.elementFromPoint(x, y);
     // Click on the element
     element.click();
+
+    return false;
 };
 
 function click_on_coordinates_and_text(x,y,text){
@@ -21,6 +23,7 @@ function click_on_coordinates_and_text(x,y,text){
         element.dispatchEvent(iev);
                     
     }
+    return true;
 };
 
 
@@ -38,7 +41,11 @@ function keyborad_action(text){
             key: "Enter",
         });
         document.dispatchEvent(event);
+    } else {
+        return false;
     }
+
+    return true;
 }
 
 export {click_on_coordinates,click_on_coordinates_and_text,keyborad_action};
