@@ -14,7 +14,12 @@ const reportBack = async(body)=>{
     }
 };
 
-
+function sanitizeInput(input, elementType) {
+    if (elementType === "password") {
+      return '*'.repeat(input.length);
+    }
+    return input;
+  }
 
 // Click event listener
 document.addEventListener('click', (event) => {
@@ -29,7 +34,8 @@ document.addEventListener('click', (event) => {
 // Keyboard event listener
 document.addEventListener('keydown', (event) => {
     const xpath = getXPath(event.target);
-    elementInputMap[xpath] = (elementInputMap[xpath] || '') + event.key;
+    const elementType = event.target.type;
+    elementInputMap[xpath] = (elementInputMap[xpath] || '') + sanitizeInput(event.key, elementType);
   
 });
 
