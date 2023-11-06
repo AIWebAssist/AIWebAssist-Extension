@@ -29,6 +29,7 @@
     {
       "resources": [
         "content.js",
+        "ground_truth.js",
         "shared/entry.js",
         "shared/extract/*.js",
         "shared/guide/*.js",
