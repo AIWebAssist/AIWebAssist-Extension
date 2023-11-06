@@ -63,4 +63,5 @@ window.addEventListener('beforeunload', (event) => {
     "event":"keyborad"
   });
   reportBack(body)
+  elementInputMap = {}
 });
