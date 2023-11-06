@@ -1,29 +1,57 @@
 function click_on_coordinates(x,y){
     var element = document.elementFromPoint(x, y);
-    // Click on the element
-    element.click();
 
-    return false;
+    if (element === undefined) {
+        return false, "element in this position is undefined."
+    }
+
+    if (element.style.display === 'none' || element.disabled) {
+        return false, "element is not clickable."
+    }
+
+    try{
+        // Click on the element
+        element.click();
+    } catch (error) {
+        return false, "element click failed: "+error
+    }
+
+    return true,"";
 };
 
 function click_on_coordinates_and_text(x,y,text){
     console.log("x="+x+",y="+y+",text="+text)
+
+    var {execution_status,msg} = click_on_coordinates(x, y);
+
+    if (!execution_status){
+        return false,msg;
+    }
+
+    // now, sent text
+    // https://stackoverflow.com/questions/64553720/how-to-send-a-word-as-a-keypress-event-in-javascript-without-jquery
     var element = document.elementFromPoint(x, y);
 
-    // Click on the element
-    element.click();
-    
-    // https://stackoverflow.com/questions/64553720/how-to-send-a-word-as-a-keypress-event-in-javascript-without-jquery
-    var instr = '';
-    for (let chr of text){                    
-        instr += chr;
-        let iei = { inputType:'insertText', data:instr, bubbles: true};
-                        
-        element.value = instr;
-        let iev = new InputEvent('input',iei);
-        element.dispatchEvent(iev);
-                    
+    if (element === undefined) {
+        return false, "element in this position is undefined."
     }
+    
+    try{
+        var instr = '';
+        for (let chr of text){                    
+            instr += chr;
+            let iei = { inputType:'insertText', data:instr, bubbles: true};
+                            
+            element.value = instr;
+            let iev = new InputEvent('input',iei);
+            element.dispatchEvent(iev);
+                        
+        }
+    } catch (error){
+        return false, "element enter text failed: "+error
+    }
+
+    element
     return true;
 };
 
