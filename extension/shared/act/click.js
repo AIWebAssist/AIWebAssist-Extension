@@ -57,6 +57,7 @@ function click_on_coordinates_and_text(x,y,text){
 
 
 function keyborad_action(text){
+    return "deprecated."
     if (text.toLowerCase() === "esc") {
         // For "esc" key press
         var event = new KeyboardEvent("keydown", {
