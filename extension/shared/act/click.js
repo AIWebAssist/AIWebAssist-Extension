@@ -34,6 +34,11 @@ function click_on_coordinates_and_text(x,y,text){
     if (element === undefined) {
         return "element in this position is undefined."
     }
+    var listeners = getEventListeners(element);
+
+    if (!listeners.input) {
+     return "Element can't recsive input.";
+    } 
     
     try{
         var instr = '';
