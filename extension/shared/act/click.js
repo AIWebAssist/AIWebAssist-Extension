@@ -1,7 +1,7 @@
 function click_on_coordinates(x,y){
     var element = document.elementFromPoint(x, y);
 
-    if (element === undefined) {
+    if (element === undefined || element === null) {
         return "element in this position is undefined."
     }
 
@@ -15,16 +15,14 @@ function click_on_coordinates(x,y){
     } catch (error) {
         return "element click failed: "+error
     }
-
-    return true;
 };
 
 function click_on_coordinates_and_text(x,y,text){
     console.log("x="+x+",y="+y+",text="+text)
 
-    var {execution_status,msg} = click_on_coordinates(x, y);
+    var msg = click_on_coordinates(x, y);
 
-    if (!execution_status){
+    if (msg !== undefined){
         return msg;
     }
 
@@ -45,13 +43,15 @@ function click_on_coordinates_and_text(x,y,text){
             element.value = instr;
             let iev = new InputEvent('input',iei);
             element.dispatchEvent(iev);
-                        
+
+            if (element.value !== instr) {
+                return "Element input validation failed. Expected: " + instr + ", Actual: " + element.value;
+            }             
         }
     } catch (error){
         return "element enter text failed: "+error
     }
 
-    return true;
 };
 
 
