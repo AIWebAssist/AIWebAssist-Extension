@@ -8,6 +8,8 @@ function scroll_down(){
 
     // Scroll down the web page
     window.scrollBy(0, scrollDistance);
+    return true;
+
 }
 
 function scroll_up(){
@@ -19,6 +21,8 @@ function scroll_up(){
 
     // Scroll up the web page
     window.scrollBy(0, -scrollDistance);
+    return true;
+
 }
 
 
@@ -31,6 +35,8 @@ function scroll_right(){
 
     // Scroll the web page to the right
     window.scrollBy(scrollDistance, 0);
+    return true;
+
 }
 
 
@@ -43,6 +49,8 @@ function scroll_left(){
 
     // Scroll the web page to the left
     window.scrollBy(-scrollDistance, 0);
+    return true;
+
 }
 
 export {scroll_left,scroll_up,scroll_right,scroll_down};

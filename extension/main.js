@@ -135,11 +135,29 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (command != undefined){
           if (command.hasOwnProperty("script") | command.hasOwnProperty("tool_input")) {
             try{
-              chrome.tabs.sendMessage(tabId, {
+               chrome.tabs.sendMessage(tabId, {
                 message: "run_command",
                 active: is_active,
                 script: command.script,
                 args: command.tool_input, 
+              },
+              function(response) {
+
+                body = JSON.stringify({
+                  "execution_status":response,
+                })
+
+                fetch(`http://scrape_anything:3000/status`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body
+              }).then((reponse) => {
+                console.log(reponse.status)
+              });
+
+
               });
             } catch (e){
               errorEl.textContent  = `Executing guidance failed, Error: ${e.message}.`;

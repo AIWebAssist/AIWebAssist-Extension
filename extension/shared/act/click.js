@@ -15,6 +15,7 @@ function click_on_coordinates(x,y){
     } catch (error) {
         return "element click failed: "+error
     }
+    return true;
 };
 
 function click_on_coordinates_and_text(x,y,text){
@@ -51,6 +52,7 @@ function click_on_coordinates_and_text(x,y,text){
     } catch (error){
         return "element enter text failed: "+error
     }
+    return true;
 
 };
 

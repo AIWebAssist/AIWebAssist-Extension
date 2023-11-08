@@ -1,13 +1,17 @@
 function refresh(){
     location.reload();
+    return true;
+
 }
 
 function go_back(){
     try{
         window.history.back();
-    }catch (error){
+    } catch (error){
         return "failed to back "+error
     }
+    return true;
+
 }
 
 function move_to_url(url){
@@ -20,6 +24,8 @@ function move_to_url(url){
     if (window.location.href !== url){
         return "new url is not "+url;
     }
+    return true;
+
 }
 
 export {move_to_url,go_back,refresh};
