@@ -146,19 +146,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                 body = JSON.stringify({
                   "execution_status":response,
                 })
-
                 fetch(`http://scrape_anything:3000/status`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body
               }).then((reponse) => {
                 console.log(reponse.status)
               });
-
-
-              });
+            });
             } catch (e){
               errorEl.textContent  = `Executing guidance failed, Error: ${e.message}.`;
             }

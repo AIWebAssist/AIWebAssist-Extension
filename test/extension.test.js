@@ -1,7 +1,7 @@
 // setup mocks
 const fetchMock = require('fetch-mock');
 const mockExtract = jest.fn().mockResolvedValue({});  // Declare mockExtract in a broader scope
-const mockCommand = jest.fn().mockResolvedValue({});
+const mockCommand = jest.fn().mockImplementation(() => {true});
 const sendMessageMock = jest.fn().mockImplementation((tabId, message) => {
   if (message.message === 'extract') {
     return mockExtract();
@@ -11,7 +11,7 @@ const sendMessageMock = jest.fn().mockImplementation((tabId, message) => {
   throw Error("!")
 });
 
-fetchMock.post('http://localhost:3000/process', {
+fetchMock.post('http://scrape_anything:3000/process', {
   "body": JSON.stringify({
     "example_script": "show_text",
     "tool_input": {
@@ -30,15 +30,18 @@ describe('Form Event Listener', () => {
   beforeEach(() => {
     // Set up a fake DOM environment for testing
     document.body.innerHTML = `
-      <form id="objective-form">
-        <input id="objective" type="text">
-        <button id="submit">Submit</button>
-        <label class="switch">
-          <input type="checkbox">
-          <span class="slider round"></span>
-        </label>
-      </form>
-      <div id="error"></div>
+    <form id="objective-form">
+    <label for="objective">What you would like to do?</label>
+    <br>
+    <select id="tabs-dropdown"></select>
+    <textarea id="objective"></textarea>
+    <button type="submit" id="submit">Submit</button>
+    </form>
+    <label class="switch">
+        <input type="checkbox" id="myCheckbox">
+        <span class="slider round"></span>
+    </label>
+    <div id="error"></div>
     `;
 
     form = document.getElementById('objective-form');
