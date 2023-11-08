@@ -145,6 +145,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 body = JSON.stringify({
                   "execution_status":response,
+                  "session_id":tabId,
                 })
                 fetch(`http://scrape_anything:3000/status`, {
                   method: "POST",
