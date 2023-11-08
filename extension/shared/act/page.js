@@ -1,26 +1,28 @@
 function refresh(){
     location.reload();
-    return true;
+    return true,"";
 }
 
 function go_back(){
-    starting_herf = window.location.href
-    window.history.back();
-    ending_herf = window.location.href
-
-    if (ending_herf === starting_herf){
-        return false;
+    try{
+        window.history.back();
+    }catch (error){
+        return "failed to back "+error
     }
-    return true;
+    return true,"";
 }
 
 function move_to_url(url){
+    if (!url.startsWith("http://") && !url.startsWith("https://")){
+        return false,"you should provide a url with http or https prefix."
+    }
+
     window.location.href = url;
 
     if (window.location.href !== url){
-        return false;
+        return false,"new url is not "+url;
     }
-    return true;
+    return true,"";
 }
 
 export {move_to_url,go_back,refresh};

@@ -2,21 +2,21 @@ function click_on_coordinates(x,y){
     var element = document.elementFromPoint(x, y);
 
     if (element === undefined) {
-        return false, "element in this position is undefined."
+        return "element in this position is undefined."
     }
 
     if (element.style.display === 'none' || element.disabled) {
-        return false, "element is not clickable."
+        return "element is not clickable."
     }
 
     try{
         // Click on the element
         element.click();
     } catch (error) {
-        return false, "element click failed: "+error
+        return "element click failed: "+error
     }
 
-    return true,"";
+    return true;
 };
 
 function click_on_coordinates_and_text(x,y,text){
@@ -25,7 +25,7 @@ function click_on_coordinates_and_text(x,y,text){
     var {execution_status,msg} = click_on_coordinates(x, y);
 
     if (!execution_status){
-        return false,msg;
+        return msg;
     }
 
     // now, sent text
@@ -33,7 +33,7 @@ function click_on_coordinates_and_text(x,y,text){
     var element = document.elementFromPoint(x, y);
 
     if (element === undefined) {
-        return false, "element in this position is undefined."
+        return "element in this position is undefined."
     }
     
     try{
@@ -48,10 +48,9 @@ function click_on_coordinates_and_text(x,y,text){
                         
         }
     } catch (error){
-        return false, "element enter text failed: "+error
+        return "element enter text failed: "+error
     }
 
-    element
     return true;
 };
 
