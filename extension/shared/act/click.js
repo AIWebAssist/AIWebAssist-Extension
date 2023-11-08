@@ -23,7 +23,7 @@ function click_on_coordinates_and_text(x,y,text){
 
     var msg = click_on_coordinates(x, y);
 
-    if (msg !== undefined){
+    if (msg !== true){
         return msg;
     }
 
