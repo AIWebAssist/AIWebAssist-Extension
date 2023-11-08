@@ -1,35 +1,65 @@
 function click_on_coordinates(x,y){
     var element = document.elementFromPoint(x, y);
-    // Click on the element
-    element.click();
 
-    return false;
+    if (element === undefined || element === null) {
+        return "element in this position is undefined."
+    }
+
+    if (element.style.display === 'none' || element.disabled) {
+        return "element is not clickable."
+    }
+
+    try{
+        // Click on the element
+        element.click();
+    } catch (error) {
+        return "element click failed: "+error
+    }
+    return true;
 };
 
 function click_on_coordinates_and_text(x,y,text){
     console.log("x="+x+",y="+y+",text="+text)
+
+    var msg = click_on_coordinates(x, y);
+
+    if (msg !== undefined){
+        return msg;
+    }
+
+    // now, sent text
+    // https://stackoverflow.com/questions/64553720/how-to-send-a-word-as-a-keypress-event-in-javascript-without-jquery
     var element = document.elementFromPoint(x, y);
 
-    // Click on the element
-    element.click();
+    if (element === undefined) {
+        return "element in this position is undefined."
+    }
     
-    // https://stackoverflow.com/questions/64553720/how-to-send-a-word-as-a-keypress-event-in-javascript-without-jquery
-    var instr = '';
-    for (let chr of text){                    
-        instr += chr;
-        let iei = { inputType:'insertText', data:instr, bubbles: true};
-                        
-        element.value = instr;
-        let iev = new InputEvent('input',iei);
-        element.dispatchEvent(iev);
-                    
+    try{
+        var instr = '';
+        for (let chr of text){                    
+            instr += chr;
+            let iei = { inputType:'insertText', data:instr, bubbles: true};
+                            
+            element.value = instr;
+            let iev = new InputEvent('input',iei);
+            element.dispatchEvent(iev);
+
+            if (element.value !== instr) {
+                return "Element input validation failed. Expected: " + instr + ", Actual: " + element.value;
+            }             
+        }
+    } catch (error){
+        return "element enter text failed: "+error
     }
     return true;
+
 };
 
 
 
 function keyborad_action(text){
+    return "deprecated."
     if (text.toLowerCase() === "esc") {
         // For "esc" key press
         var event = new KeyboardEvent("keydown", {
