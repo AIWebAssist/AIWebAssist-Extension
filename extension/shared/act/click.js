@@ -43,7 +43,6 @@ function click_on_coordinates_and_text(x,y,text){
     }
     try{
         var instr = '';
-        var originalContent = element.innerHTML || element.textContent;
         for (let chr of text){                    
             instr += chr;
             let iei = { inputType:'insertText', data:instr, bubbles: true};
