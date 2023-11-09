@@ -34,26 +34,24 @@ function click_on_coordinates_and_text(x,y,text){
     if (element === undefined) {
         return "element in this position is undefined."
     }
-    var listeners = getEventListeners(element);
-
-    if (!listeners.input) {
-     return "Element can't recsive input.";
-    } 
     
+    if (
+        element.tagName !== 'INPUT' &&
+        element.tagName !== 'TEXTAREA' &&
+        !(element.isContentEditable && element.getAttribute('contenteditable') !== 'false')){
+        console.log( "element in not reciving input");
+    }
     try{
         var instr = '';
         for (let chr of text){                    
             instr += chr;
             let iei = { inputType:'insertText', data:instr, bubbles: true};
                             
+            
             element.value = instr;
             let iev = new InputEvent('input',iei);
-            element.dispatchEvent(iev);
-
-            if (element.value !== instr) {
-                return "Element input validation failed. Expected: " + instr + ", Actual: " + element.value;
-            }             
-        }
+            element.dispatchEvent(iev);       
+            
     } catch (error){
         return "element enter text failed: "+error
     }
