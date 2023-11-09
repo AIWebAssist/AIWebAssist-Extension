@@ -39,7 +39,7 @@ function click_on_coordinates_and_text(x,y,text){
         element.tagName !== 'INPUT' &&
         element.tagName !== 'TEXTAREA' &&
         !(element.isContentEditable && element.getAttribute('contenteditable') !== 'false')){
-        return "element in not reciving input"
+        console.log( "element in not reciving input");
     }
     try{
         var instr = '';
