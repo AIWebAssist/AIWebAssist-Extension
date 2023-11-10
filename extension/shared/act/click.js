@@ -50,7 +50,8 @@ function click_on_coordinates_and_text(x,y,text){
             
             element.value = instr;
             let iev = new InputEvent('input',iei);
-            element.dispatchEvent(iev);       
+            element.dispatchEvent(iev); 
+        }      
             
     } catch (error){
         return "element enter text failed: "+error
