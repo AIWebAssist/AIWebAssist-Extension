@@ -9,41 +9,14 @@ export default function get_elements(){
       return '';
     }
 
-  function calculateZScore(element) {
-  const zIndex = window.getComputedStyle(element).zIndex;
-
-  if (zIndex === 'auto') {
-    // Treat "auto" zIndex as the lowest possible value
-    return -Infinity;
-  }
-
-  const zIndexValue = parseFloat(zIndex);
-  const siblings = Array.from(element.parentNode.children)
-    .map(sibling => {
-      const siblingZIndex = window.getComputedStyle(sibling).zIndex;
-      return siblingZIndex === 'auto' ? -Infinity : parseFloat(siblingZIndex);
-    })
-    .filter(z => !isNaN(z));
-
-  const mean = siblings.reduce((sum, value) => sum + value, 0) / siblings.length;
-  const variance = siblings.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / siblings.length;
-  const stdDev = Math.sqrt(variance);
-
-  if (stdDev === 0) {
-    // Avoid division by zero
-    return 0;
-  }
-
-  return (zIndexValue - mean) / stdDev;
-}
-  
   function isOnTop(element) {
-    const visibilityStyle = window.getComputedStyle(element).visibility;
-    const opacity = parseFloat(window.getComputedStyle(element).opacity);
-    const zScore = calculateZScore(element);
-
-    return visibilityStyle !== 'hidden' && opacity !== 0 && zScore >= 0;
+    let divs = document.querySelectorAll('section div');
+  
+    return [...divs].some(div =>
+      div.getBoundingClientRect().bottom > element.getBoundingClientRect().bottom
+    );
   }
+  
   function cleanCsvTags(element) {
       if (element === undefined){
        return "";
