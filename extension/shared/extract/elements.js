@@ -9,12 +9,14 @@ export default function get_elements(){
       return '';
     }
 
-  function isOnTop(element){
-    return element.checkVisibility({
-        checkOpacity: true,      // Check CSS opacity property too
-        checkVisibilityCSS: true // Check CSS visibility property too
-    });
-   }
+  function isOnTop(element) {
+    let divs = document.querySelectorAll('section div');
+  
+    return [...divs].some(div =>
+      div.getBoundingClientRect().bottom > element.getBoundingClientRect().bottom
+    );
+  }
+  
   function cleanCsvTags(element) {
       if (element === undefined){
        return "";
