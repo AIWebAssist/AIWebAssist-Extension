@@ -23,8 +23,13 @@
   },
   "permissions": [
     "activeTab",
-    "tabs"
+    "tabs",
+    "sidePanel",
+    "storage"
   ],
+  "side_panel": {
+    "default_path": "main.html"
+  },
   "web_accessible_resources":[
     {
       "resources": [

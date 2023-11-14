@@ -2,7 +2,12 @@ const populateTabsDropdown = async () => {
   const tabsDropdown = document.getElementById("tabs-dropdown");
 
   try {
+    // Clear existing options
+    tabsDropdown.innerHTML = "";
+
+    // Query all tabs
     const tabs = await chrome.tabs.query({});
+
     tabs.forEach(tab => {
       const option = document.createElement("option");
       option.value = tab.id;
@@ -10,16 +15,34 @@ const populateTabsDropdown = async () => {
       tabsDropdown.appendChild(option);
     });
 
-    // Set the last tab as the default option
-    const lastTab = tabs[tabs.length - 2];
-    if (lastTab) {
-      tabsDropdown.value = lastTab.id;
+    // Set the currently active tab as the selected option
+    const activeTab = tabs.find(tab => tab.active);
+    if (activeTab) {
+      tabsDropdown.value = activeTab.id;
     }
   } catch (e) {
     console.error(e);
   }
 };
 
+// Add an event listener to handle tab changes
+chrome.tabs.onActivated.addListener(async () => {
+  await populateTabsDropdown();
+});
+
+function captureVisibleTab() {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.captureVisibleTab({ format: "png" }, function (screenshotDataUrl) {
+      if (chrome.runtime.lastError) {
+        // Handle any error that occurred during capturing
+        reject(new Error(chrome.runtime.lastError));
+      } else {
+        // Resolve the promise with the screenshotDataUrl
+        resolve(screenshotDataUrl);
+      }
+    });
+  });
+}
 
 document.addEventListener("DOMContentLoaded", async function () {
   console.log('DOMContentLoaded event dispatched');
@@ -53,6 +76,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     let body = undefined;
 
     try{
+        chrome.tabs.captureVisibleTab({ format: "png" },function(screenshotDataUrl) {
+          chrome.storage.local.set({ "screenshot": screenshotDataUrl });
+        });
         const elements = await chrome.tabs.sendMessage(tabId, {
           message: "extract",
           script: "elements",
@@ -85,6 +111,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         console.log("sending request to the server.")
+        let screenshotImage =  await new Promise((resolve, reject) => {
+            chrome.storage.local.get(["screenshot"], function(result) {
+              if (chrome.runtime.lastError) {
+                // Handle any error that occurred during capturing
+                reject(new Error(chrome.runtime.lastError));
+              } else {
+                // Resolve the promise with the screenshotDataUrl
+                resolve(result.screenshot);
+              }
+            });
+          });
+        console.log(screenshotImage)
         body = JSON.stringify({
           "viewpointscroll":viewpointscroll,
           "viewportHeight":viewportHeight,
@@ -96,6 +134,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           "url":url,
           "user_task":objective,
           "session_id":tabId,
+          "screenshot":screenshotImage,
         });
       } catch (e) {
           console.log(e.message)

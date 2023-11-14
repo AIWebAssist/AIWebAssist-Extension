@@ -9,13 +9,13 @@ export default function get_elements(){
       return '';
     }
 
-  function isOnTop(element) {
-    let divs = document.querySelectorAll('section div');
+  // function isOnTop(element) {
+  //   let divs = document.querySelectorAll('section div');
   
-    return [...divs].some(div =>
-      div.getBoundingClientRect().bottom > element.getBoundingClientRect().bottom
-    );
-  }
+  //   return [...divs].some(div =>
+  //     div.getBoundingClientRect().bottom > element.getBoundingClientRect().bottom
+  //   );
+  // }
   
   function cleanCsvTags(element) {
       if (element === undefined){
@@ -71,7 +71,7 @@ export default function get_elements(){
     
       };
       
-      if (elementInfo.rect !== undefined && isOnTop(element)){
+      if (elementInfo.rect !== undefined){
       elementDetails.push(elementInfo)
       }
     
