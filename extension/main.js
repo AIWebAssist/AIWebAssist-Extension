@@ -2,7 +2,12 @@ const populateTabsDropdown = async () => {
   const tabsDropdown = document.getElementById("tabs-dropdown");
 
   try {
+    // Clear existing options
+    tabsDropdown.innerHTML = "";
+
+    // Query all tabs
     const tabs = await chrome.tabs.query({});
+
     tabs.forEach(tab => {
       const option = document.createElement("option");
       option.value = tab.id;
@@ -10,15 +15,20 @@ const populateTabsDropdown = async () => {
       tabsDropdown.appendChild(option);
     });
 
-    // Set the last tab as the default option
-    const lastTab = tabs[tabs.length - 2];
-    if (lastTab) {
-      tabsDropdown.value = lastTab.id;
+    // Set the currently active tab as the selected option
+    const activeTab = tabs.find(tab => tab.active);
+    if (activeTab) {
+      tabsDropdown.value = activeTab.id;
     }
   } catch (e) {
     console.error(e);
   }
 };
+
+// Add an event listener to handle tab changes
+chrome.tabs.onActivated.addListener(async () => {
+  await populateTabsDropdown();
+});
 
 function captureVisibleTab() {
   return new Promise((resolve, reject) => {
