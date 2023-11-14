@@ -20,6 +20,19 @@ const populateTabsDropdown = async () => {
   }
 };
 
+function captureVisibleTab() {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.captureVisibleTab({ format: "png" }, function (screenshotDataUrl) {
+      if (chrome.runtime.lastError) {
+        // Handle any error that occurred during capturing
+        reject(new Error(chrome.runtime.lastError));
+      } else {
+        // Resolve the promise with the screenshotDataUrl
+        resolve(screenshotDataUrl);
+      }
+    });
+  });
+}
 
 document.addEventListener("DOMContentLoaded", async function () {
   console.log('DOMContentLoaded event dispatched');
@@ -53,6 +66,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     let body = undefined;
 
     try{
+        chrome.tabs.captureVisibleTab({ format: "png" },function(screenshotDataUrl) {
+          chrome.storage.local.set({ "screenshot": screenshotDataUrl });
+        });
         const elements = await chrome.tabs.sendMessage(tabId, {
           message: "extract",
           script: "elements",
@@ -85,6 +101,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         console.log("sending request to the server.")
+        let screenshotImage =  await new Promise((resolve, reject) => {
+            chrome.storage.local.get(["screenshot"], function(result) {
+              if (chrome.runtime.lastError) {
+                // Handle any error that occurred during capturing
+                reject(new Error(chrome.runtime.lastError));
+              } else {
+                // Resolve the promise with the screenshotDataUrl
+                resolve(result.screenshot);
+              }
+            });
+          });
+        console.log(screenshotImage)
         body = JSON.stringify({
           "viewpointscroll":viewpointscroll,
           "viewportHeight":viewportHeight,
@@ -96,6 +124,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           "url":url,
           "user_task":objective,
           "session_id":tabId,
+          "screenshot":screenshotImage,
         });
       } catch (e) {
           console.log(e.message)
