@@ -5,18 +5,21 @@ const populateTabsDropdown = async () => {
     // Clear existing options
     tabsDropdown.innerHTML = "";
 
-    // Query all tabs
-    const tabs = await chrome.tabs.query({});
+    // Get information about the current window
+    const currentWindow = await chrome.windows.getCurrent({ populate: true });
 
-    tabs.forEach(tab => {
+    // Filter tabs to include only those in the current window
+    const tabsInCurrentWindow = currentWindow.tabs.filter(tab => !tab.url.startsWith("chrome-extension://"));
+
+    tabsInCurrentWindow.forEach(tab => {
       const option = document.createElement("option");
       option.value = tab.id;
       option.text = tab.title;
       tabsDropdown.appendChild(option);
     });
 
-    // Set the currently active tab as the selected option
-    const activeTab = tabs.find(tab => tab.active);
+    // Set the currently active tab in the current window as the selected option
+    const activeTab = tabsInCurrentWindow.find(tab => tab.active);
     if (activeTab) {
       tabsDropdown.value = activeTab.id;
     }
