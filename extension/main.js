@@ -125,6 +125,7 @@ document.addEventListener("DOMContentLoaded", async function () {
               }
             });
           });
+        chrome.storage.local.clear()
         console.log(screenshotImage)
         body = JSON.stringify({
           "viewpointscroll":viewpointscroll,

@@ -3,13 +3,15 @@
   "description": "AI Assistance, your browser with guidance.",
   "version": "1.0",
   "manifest_version": 3,
-  "content_scripts": [{
+  "content_scripts": [
+    {
     "matches": ["<all_urls>"],
     "js": [
       "content_main.js"
     ]
   }],
   "action": {
+    "default_popup": "main.html",
     "default_icon": "icons/icon.png"
   },
   "background": {
@@ -24,7 +26,6 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "sidePanel",
     "storage"
   ],
   "side_panel": {
