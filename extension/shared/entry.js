@@ -41,6 +41,9 @@ async function call_guide(function_name,args){
     else if (function_name == "server_fail"){
         return show_text("Service is down.")
     }
+    else if (function_name == "show_guidance"){
+        return show_text(args.message)
+    }
     else{
         throw new Error('function '+function_name+" is not defined.");
     }
@@ -116,6 +119,12 @@ async function call_act(function_name,args){
     }
     else if (function_name == "scroll_right"){
         return scroll_right()
+    }
+    else if (function_name == "server_fail"){
+        return show_text("Service is down.")
+    }
+    else if (function_name == "show_guidance"){
+        return show_text(args.message)
     }
     else{
         throw new Error('function '+function_name+" is not defined.");
