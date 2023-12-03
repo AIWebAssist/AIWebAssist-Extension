@@ -40,7 +40,8 @@
         "shared/entry.js",
         "shared/extract/*.js",
         "shared/guide/*.js",
-        "shared/act/*.js"
+        "shared/act/*.js",
+        "cricle.png"
       ],
       "matches": [
         "<all_urls>"
