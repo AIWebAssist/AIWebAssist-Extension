@@ -125,11 +125,12 @@
                 `;
                 popup = document.createElement('div');
                 popup.innerHTML = popupContent;
-                
+                // Set a higher z-index for the popup
+                popup.style.zIndex = '2147483648';
 
                 document.body.appendChild(popup);
                 
-                popup.style.zIndex = '2147483647';
+                
 
                 const form = document.getElementById("objective-form");
                 const objectiveInput = document.getElementById("objective");
