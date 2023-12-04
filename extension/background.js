@@ -1,11 +1,31 @@
-chrome.action.onClicked.addListener((tab) => {
-  chrome.windows.create({
-    url: chrome.runtime.getURL(`main.html`),
-    width: 600,
-    height: 600,
-    type: "popup",
-  });
-});
 chrome.runtime.onInstalled.addListener((tab) => {
   console.log("installed")
 });
+
+chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
+  if (request.contentScriptQuery === "take_screenshot") {
+    try {
+      const screenshotDataUrl = await captureVisibleTab(sender.tab.windowId);
+      chrome.storage.local.set({ "screenshot": screenshotDataUrl });
+      sendResponse(screenshotDataUrl);
+    } catch (error) {
+      console.error("Error capturing screenshot:", error);
+      sendResponse({ error: "Failed to capture screenshot" });
+    }
+  }
+
+  // To indicate that the sendResponse callback will be called asynchronously
+  return true;
+});
+
+function captureVisibleTab(tabId) {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.captureVisibleTab(tabId,{ format: "png" }, function (screenshotDataUrl) {
+      if (chrome.runtime.lastError) {
+        reject(chrome.runtime.lastError);
+      } else {
+        resolve(screenshotDataUrl);
+      }
+    });
+  });
+}
