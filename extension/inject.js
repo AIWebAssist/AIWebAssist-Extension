@@ -82,7 +82,7 @@
         circle.style.cursor = 'pointer';
         circle.style.color = 'white';
         circle.style.fontWeight = 'bold';
-        circle.style.zIndex = '2147483647';
+        circle.style.zIndex = '2147483646';
 
         let popup = null; // Variable to store the pop-up element
     
@@ -125,10 +125,12 @@
                 `;
                 popup = document.createElement('div');
                 popup.innerHTML = popupContent;
-                popup.style.zIndex = '2147483647';
+                
 
                 document.body.appendChild(popup);
-    
+                
+                popup.style.zIndex = '2147483647';
+
                 const form = document.getElementById("objective-form");
                 const objectiveInput = document.getElementById("objective");
                 const submitButton = document.getElementById("submit");
