@@ -82,7 +82,8 @@
         circle.style.cursor = 'pointer';
         circle.style.color = 'white';
         circle.style.fontWeight = 'bold';
-    
+        circle.style.zIndex = '2147483647';
+
         let popup = null; // Variable to store the pop-up element
     
         // Step 3: Add event listener to the circle element
@@ -124,6 +125,8 @@
                 `;
                 popup = document.createElement('div');
                 popup.innerHTML = popupContent;
+                popup.style.zIndex = '2147483647';
+
                 document.body.appendChild(popup);
     
                 const form = document.getElementById("objective-form");
