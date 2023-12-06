@@ -104,24 +104,25 @@
     
                 // Step 4: Create and append the pop-up menu
                 const popupContent = `
-                <div style="position: fixed; left: ${popupX}px; top: ${popupY}px; background-color: white; padding: 10px; border: 1px solid #ddd; max-width: ${popupWidth}px; z-index: 2147483647;">
-                    <!-- Close button -->
-                    <button id="closeButton" style="position: absolute; top: 5px; right: 5px; cursor: pointer;">X</button>
-            
-                    <form id="objective-form">
-                        <label for="objective">What you would like to do?</label>
-                        <br>
-                        <textarea id="objective"></textarea>
-                        <button type="submit" id="submit">Submit</button>
-                    </form>
-            
-                    <label class="switch">
-                        <input type="checkbox" id="myCheckbox">
-                        <span class="slider round"></span>
-                        <span id="checkboxText">Guide me only</span> 
-                    </label>
-                    <div id="error"></div>
-                </div>
+                    <div style="position: fixed; left: ${popupX}px; top: ${popupY}px; background-color: white; padding: 10px; border: 1px solid #ddd; max-width: ${popupWidth}px; z-index: 2147483647;">
+                            <!-- Close button -->
+                            <button id="closeButton" style="position: absolute; top: 5px; right: 5px; cursor: pointer;">X</button>
+                    
+                            <form id="objective-form">
+                                <label for="objective">What you would like to do?</label>
+                                <br>
+                                <!-- Remove the autofocus attribute from the textarea -->
+                                <textarea id="objective"></textarea>
+                                <button type="submit" id="submit">Submit</button>
+                            </form>
+                    
+                            <label class="switch">
+                                <input type="checkbox" id="myCheckbox">
+                                <span class="slider round"></span>
+                                <span id="checkboxText">Guide me only</span> 
+                            </label>
+                            <div id="error"></div>
+                        </div>
                 `;
                 popup = document.createElement('div');
                 popup.innerHTML = popupContent;
