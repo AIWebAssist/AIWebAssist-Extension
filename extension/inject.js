@@ -127,10 +127,6 @@
                 popup.innerHTML = popupContent;
 
                 document.body.appendChild(popup);
-                // Focus on the textarea after the popup is opened
-                document.querySelectorAll('[autofocus]').forEach(element => {
-                    element.removeAttribute('autofocus');
-                });
                 
 
                 const form = document.getElementById("objective-form");
@@ -141,6 +137,32 @@
                 const checkboxText = document.getElementById("checkboxText");
                 const closeButton = popup.querySelector('#closeButton');
     
+                const disabledElements = new Set();
+
+                // Function to disable the currently focused element
+                function disableFocusedElement() {
+                    const focusedElement = document.activeElement;
+                    if (focusedElement && focusedElement.tagName !== "BODY" & focusedElement !== objectiveInput ) {
+                        focusedElement.setAttribute('disabled', 'disabled');
+                        disabledElements.add(focusedElement)
+                    }
+                }
+
+                function enableAllDisabledElements() {
+                    for (const element of disabledElements) {
+                        element.removeAttribute('tabindex');
+                        element.removeAttribute('disabled');
+                    }
+                    disabledElements.clear();
+                }
+
+                // Event listener for 'click' on the objectiveInput
+                objectiveInput.addEventListener('click', disableFocusedElement);
+                objectiveInput.addEventListener('input', disableFocusedElement);
+
+                // Event listener for 'blur' on the objectiveInput
+                objectiveInput.addEventListener('blur', enableAllDisabledElements);
+
                 closeButton.addEventListener('click', () => {
                     document.body.removeChild(popup);
                     popup = null; // Reset the variable
@@ -158,12 +180,12 @@
                 active.addEventListener("change", function() {
                     if (active.checked) {
                         checkboxText.textContent = "Taking Action";
-                        is_active = true;
+                        chrome.storage.local.set({ is_active: true });
                     } else {
                         checkboxText.textContent = "Guide me only";
-                        is_active = false;
+                        chrome.storage.local.set({ is_active: false });
                     }
-                    chrome.storage.local.set({ is_active: is_active });
+                    
                 });
     
                 // Add an event listener for 'input' event on the textarea to store the value
@@ -284,7 +306,7 @@
                             try{
                                 contentScript.main({
                                     message: "run_command",
-                                    active: is_active,
+                                    active: active.checked,
                                     script: command.script,
                                     args: command.tool_input, 
                                 },
