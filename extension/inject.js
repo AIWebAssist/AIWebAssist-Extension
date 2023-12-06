@@ -127,7 +127,8 @@
                 popup.innerHTML = popupContent;
 
                 document.body.appendChild(popup);
-                
+                // Focus on the textarea after the popup is opened
+                objectiveInput.focus();
                 
 
                 const form = document.getElementById("objective-form");
