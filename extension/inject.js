@@ -128,7 +128,9 @@
 
                 document.body.appendChild(popup);
                 // Focus on the textarea after the popup is opened
-                objectiveInput.focus();
+                document.querySelectorAll('[autofocus]').forEach(element => {
+                    element.removeAttribute('autofocus');
+                });
                 
 
                 const form = document.getElementById("objective-form");
