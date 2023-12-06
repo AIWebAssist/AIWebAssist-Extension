@@ -104,7 +104,7 @@
     
                 // Step 4: Create and append the pop-up menu
                 const popupContent = `
-                <div style="position: fixed; left: ${popupX}px; top: ${popupY}px; background-color: white; padding: 10px; border: 1px solid #ddd; max-width: ${popupWidth}px;">
+                <div style="position: fixed; left: ${popupX}px; top: ${popupY}px; background-color: white; padding: 10px; border: 1px solid #ddd; max-width: ${popupWidth}px; z-index: 2147483647;">
                     <!-- Close button -->
                     <button id="closeButton" style="position: absolute; top: 5px; right: 5px; cursor: pointer;">X</button>
             
@@ -125,8 +125,6 @@
                 `;
                 popup = document.createElement('div');
                 popup.innerHTML = popupContent;
-                // Set a higher z-index for the popup
-                popup.style.zIndex = '2147483648';
 
                 document.body.appendChild(popup);
                 
