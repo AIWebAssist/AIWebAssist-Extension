@@ -195,7 +195,6 @@
                 });
     
                 form.addEventListener("submit", async (e) => {
-                    enableAllDisabledElements()
                     console.log('submit event dispatched');
                     e.preventDefault();
                     submitButton.setAttribute("disabled", true);
