@@ -142,7 +142,7 @@
                 // Function to disable the currently focused element
                 function disableFocusedElement() {
                     const focusedElement = document.activeElement;
-                    if (focusedElement && focusedElement.tagName !== "BODY" & focusedElement !== objectiveInput ) {
+                    if (focusedElement && focusedElement.tagName !== "BODY" & focusedElement !== objectiveInput & focusedElement !== submitButton ) {
                         focusedElement.setAttribute('disabled', 'disabled');
                         disabledElements.add(focusedElement)
                     }
@@ -195,6 +195,7 @@
                 });
     
                 form.addEventListener("submit", async (e) => {
+                    enableAllDisabledElements()
                     console.log('submit event dispatched');
                     e.preventDefault();
                     submitButton.setAttribute("disabled", true);
