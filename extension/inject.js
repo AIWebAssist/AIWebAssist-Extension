@@ -322,7 +322,7 @@
                                     "execution_status":response,
                                     "session_id":tabId,
                                 })
-                                fetch(`http://scrape_anything:3000/status`, {
+                                fetch(`https://scrape_anything:3000/status`, {
                                     method: "POST",
                                     headers: {
                                     "Content-Type": "application/json",
