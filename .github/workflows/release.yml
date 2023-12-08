@@ -40,7 +40,7 @@ jobs:
         id: set_extension_id
         run: |
           if [[ ${{ github.event_name }} == 'pull_request' ]]; then
-            echo "" >> extension_id.txt
+            echo "pacicdjgganecekjpopincedecpdajae" >> extension_id.txt
           else
             echo "edicmckdpjpagngabbhhlbahoicjabmoe" >> extension_id.txt
           fi
