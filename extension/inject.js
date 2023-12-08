@@ -202,13 +202,13 @@
     
                     const objective = objectiveInput.value;
                     let body = undefined;
-    
-                    try{
-                        const session_id = await new Promise((resolve) => {
-                            chrome.runtime.sendMessage({ contentScriptQuery: "get_session_id" }, function(response) {
-                                resolve(response);
-                            });
+                    const session_id = await new Promise((resolve) => {
+                        chrome.runtime.sendMessage({ contentScriptQuery: "get_session_id" }, function(response) {
+                            resolve(response);
                         });
+                    });
+                    try{
+                        
                         
                         chrome.runtime.sendMessage({ contentScriptQuery: "take_screenshot" }, function(response) {
                             console.log("called");
@@ -303,7 +303,7 @@
                             command = await res.json();
                             }
                         } catch (e) {
-                            command = {"script":"server_fail",'tool_input':{}}
+                            command = {"script": "server_fail",'tool_input':{}}
                             errorEl.textContent  = `Calling backend failed, Error: ${e.message}.`;
                         }
                         
@@ -315,22 +315,23 @@
                                     active: active.checked,
                                     script: command.script,
                                     args: command.tool_input, 
-                                },
+                                }).then(
                                 function(response) {
-    
-                                body = JSON.stringify({
-                                    "execution_status":response,
-                                    "session_id":tabId,
-                                })
-                                fetch(`https://scrape_anything:3000/status`, {
-                                    method: "POST",
-                                    headers: {
-                                    "Content-Type": "application/json",
-                                    },
-                                    body
-                                }).then((reponse) => {
-                                console.log(reponse.status)
-                                });
+                                    body = JSON.stringify({
+                                        "execution_status":response,
+                                        "session_id":session_id,
+                                    })
+                                    fetch(`https://scrape_anything:3000/status`, {
+                                            method: "POST",
+                                            headers: {
+                                            "Content-Type": "application/json",
+                                            },
+                                            body
+                                        }).then((reponse) => {
+                                             console.log("reported.")
+                                    }).catch(error => {
+                                        console.error("failed to report")
+                                    });
                             });
                             } catch (e){
                                 errorEl.textContent  = `Executing guidance failed, Error: ${e.message}.`;
