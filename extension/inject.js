@@ -204,6 +204,12 @@
                     let body = undefined;
     
                     try{
+                        const session_id = await new Promise((resolve) => {
+                            chrome.runtime.sendMessage({ contentScriptQuery: "get_session_id" }, function(response) {
+                                resolve(response);
+                            });
+                        });
+                        
                         chrome.runtime.sendMessage({ contentScriptQuery: "take_screenshot" }, function(response) {
                             console.log("called");
                             // Handle the response or do other processing with the screenshotDataUrl
@@ -263,7 +269,7 @@
                             "raw_on_screen":elements,
                             "url":url,
                             "user_task":objective,
-                            "session_id":"tabId",
+                            "session_id":session_id,
                             "screenshot":screenshotImage,
                         });
                         } catch (e) {
