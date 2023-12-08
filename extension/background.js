@@ -12,6 +12,10 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
       console.error("Error capturing screenshot:", error);
       sendResponse({ error: "Failed to capture screenshot" });
     }
+  } else if (request.contentScriptQuery === "get_session_id") {
+    // Handle the contentScriptQuery to get the tab ID
+    const tabId = sender.tab.id;
+    sendResponse({ tabId });
   }
 
   // To indicate that the sendResponse callback will be called asynchronously
