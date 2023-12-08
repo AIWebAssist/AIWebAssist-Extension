@@ -3,6 +3,9 @@ name: Zip Release
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main" ]   
 
 jobs:
   build:
@@ -25,13 +28,6 @@ jobs:
           
       - name: Log Version
         run: echo ${{ steps.tag_version.outputs.new_tag }}
-      # - name: Create CRX
-      #   uses: cardinalby/webext-buildtools-chrome-crx-action@v2
-      #   with:
-      #     # zip file made at the packExtensionDir step
-      #     zipFilePath: 'extension.zip'
-      #     crxFilePath: 'extension.crx'
-      #     privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
       - name: Upload Release
         uses: ncipollo/release-action@v1.12.0
         with:
@@ -39,11 +35,21 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag  }}
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
+
+      - name: Set Extension ID
+        id: set_extension_id
+        run: |
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            echo "pacicdjgganecekjpopincedecpdajae" >> extension_id.txt
+          else
+            echo "edicmckdpjpagngabbhhlbahoicjabmoe" >> extension_id.txt
+          fi
+        shell: bash
       - name: Upload & release
         uses: mnao305/chrome-extension-upload@v4.0.1
         with:
           file-path: extension.zip
-          extension-id: dicmckdpjpagngabbhhlbahoicjabmoe
+          extension-id: $(cat extension_id.txt)
           client-id: ${{ secrets.CLIENT_ID }}
           client-secret: ${{ secrets.CLIENT_SECRET }}
           refresh-token: ${{ secrets.REFRESH_TOKEN }}
