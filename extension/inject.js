@@ -2,18 +2,34 @@
     // Check if the circle already exists
     if (!document.getElementById('ai-assistance-circle')) {
     
-        // Retrieve stored values from local storage
-        const storedIsChecked = await new Promise((resolve) => {
-            chrome.storage.local.get("is_active", function(result) {
-                resolve(result.is_active);
+        const session_id = await new Promise((resolve) => {
+            chrome.runtime.sendMessage({ contentScriptQuery: "get_session_id" }, function(response) {
+                resolve(response);
             });
         });
-    
-        const storedObjective = await new Promise((resolve) => {
-            chrome.storage.local.get("objective", function(result) {
-                resolve(result.objective);
+
+        // Function to get tab-specific storage key
+        function getTabStorageKey(session_id,keyword) {
+            return 'session_'+session_id+"_" + keyword;
+        }
+
+        // Function to get storage for a specific tab
+        async function getTabStorage(session_id, keyword) {
+            return await new Promise((resolve) => {
+                var tabStorageKey = getTabStorageKey(session_id, keyword);
+                chrome.storage.local.get(tabStorageKey, function(result) {
+                    resolve(result[tabStorageKey]);
+                });
             });
-        });
+        }
+
+        // Function to set storage for a specific tab
+        async function setTabStorage(session_id, keyword,value) {
+            const tabStorageKey = getTabStorageKey(session_id, keyword);
+            var storageData = {};
+            storageData[tabStorageKey] = value;
+            chrome.storage.local.set(storageData);
+        }
     
         const src = chrome.runtime.getURL('./content.js');
         const contentScript = await import(src);
@@ -87,7 +103,7 @@
         let popup = null; // Variable to store the pop-up element
     
         // Step 3: Add event listener to the circle element
-        circle.addEventListener('click', function () {
+        circle.addEventListener('click', async function () {
             if (popup) {
                 // If pop-up is already open, close it by removing it from the DOM
                 document.body.removeChild(popup);
@@ -169,29 +185,33 @@
                 });
     
                 // populate with the stored fields
+                // Retrieve stored values from local storage
+                const storedIsChecked = await getTabStorage(session_id,"is_active");
+
                 active.checked = storedIsChecked || false;
                 if (storedIsChecked) {
                     checkboxText.textContent = "Taking Action";
                 } else {
                     checkboxText.textContent = "Guide me only";
                 }
-    
+                
+                const storedObjective = await getTabStorage(session_id,"objective");
                 objectiveInput.value = storedObjective || "";
-                active.addEventListener("change", function() {
+                active.addEventListener("change", async function() {
                     if (active.checked) {
                         checkboxText.textContent = "Taking Action";
-                        chrome.storage.local.set({ is_active: true });
+                        await setTabStorage(session_id,"is_active", true);
                     } else {
                         checkboxText.textContent = "Guide me only";
-                        chrome.storage.local.set({ is_active: false });
+                        await setTabStorage(session_id,"is_active", false);
                     }
                     
                 });
     
                 // Add an event listener for 'input' event on the textarea to store the value
-                objectiveInput.addEventListener("input", function() {
+                objectiveInput.addEventListener("input", async function() {
                     // Store text field value in local storage on every change
-                    chrome.storage.local.set({ objective: objectiveInput.value });
+                    await setTabStorage(session_id,"objective",objectiveInput.value)
                 });
     
                 form.addEventListener("submit", async (e) => {
@@ -202,18 +222,13 @@
     
                     const objective = objectiveInput.value;
                     let body = undefined;
-                    const session_id = await new Promise((resolve) => {
-                        chrome.runtime.sendMessage({ contentScriptQuery: "get_session_id" }, function(response) {
-                            resolve(response);
-                        });
-                    });
                     try{
-                        
-                        
-                        chrome.runtime.sendMessage({ contentScriptQuery: "take_screenshot" }, function(response) {
-                            console.log("called");
-                            // Handle the response or do other processing with the screenshotDataUrl
-                         });
+                        const screenshotImage = await new Promise((resolve) => {
+                            chrome.runtime.sendMessage({ contentScriptQuery: "take_screenshot" }, function(response) {
+                                resolve(response);
+                            });
+                        });
+
                         const elements = await contentScript.main({
                             message: "extract",
                             script: "elements",
@@ -246,18 +261,6 @@
                         });
     
                         console.log("sending request to the server.")
-                        let screenshotImage =  await new Promise((resolve, reject) => {
-                            chrome.storage.local.get(["screenshot"], function(result) {
-                                if (chrome.runtime.lastError) {
-                                // Handle any error that occurred during capturing
-                                reject(new Error(chrome.runtime.lastError));
-                                } else {
-                                // Resolve the promise with the screenshotDataUrl
-                                resolve(result.screenshot);
-                                }
-                            });
-                            });
-                        chrome.storage.local.clear()
                         console.log(screenshotImage)
                         body = JSON.stringify({
                             "viewpointscroll":viewpointscroll,
