@@ -46,7 +46,7 @@ jobs:
           if [[ ${{ github.event_name }} == 'pull_request' ]]; then
             echo "::set-output name=extension_id::pacicdjgganecekjpopincedecpdajae"
           else
-            echo "::set-output name=extension_id::edicmckdpjpagngabbhhlbahoicjabmoe"
+            echo "::set-output name=extension_id::dicmckdpjpagngabbhhlbahoicjabmoe"
           fi
         shell: bash
       - name: Upload & release
