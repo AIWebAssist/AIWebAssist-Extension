@@ -63,19 +63,29 @@ function click_on_coordinates_and_text(x,y,text){
 
 
 function keyborad_action(text){
-    return "deprecated."
+    activeElement = document.activeElement
+    if (activeElement == undefined){
+        return false;
+    }
     if (text.toLowerCase() === "esc") {
         // For "esc" key press
-        var event = new KeyboardEvent("keydown", {
-            key: "Escape",
-        });
-        document.dispatchEvent(event);
+        var event = new KeyboardEvent('keydown', {
+            key: 'Escape',
+            code: 'Escape',
+            bubbles: true,
+            cancelable: true,
+          });
+        activeElement.dispatchEvent(event);
     } else if (text.toLowerCase() === "enter") {
         // For "enter" key press
-        var event = new KeyboardEvent("keydown", {
-            key: "Enter",
-        });
-        document.dispatchEvent(event);
+        var event = new KeyboardEvent('keydown', {
+            key: 'Enter',
+            code: 'Enter',
+            bubbles: true,
+            cancelable: true,
+          });
+          
+        activeElement.dispatchEvent(event);
     } else {
         return false;
     }
