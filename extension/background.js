@@ -2,20 +2,19 @@ chrome.runtime.onInstalled.addListener((tab) => {
   console.log("installed")
 });
 
-chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.contentScriptQuery === "take_screenshot") {
-    try {
-      const screenshotDataUrl = await captureVisibleTab(sender.tab.windowId);
-      chrome.storage.local.set({ "screenshot": screenshotDataUrl });
-      sendResponse(screenshotDataUrl);
-    } catch (error) {
-      console.error("Error capturing screenshot:", error);
-      sendResponse({ error: "Failed to capture screenshot" });
-    }
+      captureVisibleTab(sender.tab.windowId)
+          .then((screenshotDataUrl) => sendResponse(screenshotDataUrl))
+          .catch((error) => {
+              console.error("Error capturing screenshot:", error);
+              sendResponse({ error: "Failed to capture screenshot" });
+          });
+      return true; // To indicate that the sendResponse callback will be called asynchronously
+  } else if (request.contentScriptQuery === "get_session_id") {
+      sendResponse(sender.tab.id);
+      return true; // To indicate that the sendResponse callback will be called asynchronously
   }
-
-  // To indicate that the sendResponse callback will be called asynchronously
-  return true;
 });
 
 function captureVisibleTab(tabId) {
