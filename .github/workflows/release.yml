@@ -17,7 +17,9 @@ jobs:
         
       - name: Update Manifest
         run: |
-          sed -i "s/\"name\": \".*\"/\"name\": \"AIAssistance - Dev\"/" extension/manifest.json
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+            sed -i "s/\"name\": \".*\"/\"name\": \"AIAssistance - Dev\"/" extension/manifest.json
+          fi
         working-directory: ${{ github.workspace }}
       - name: Zip Files
         run: |
