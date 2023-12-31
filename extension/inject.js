@@ -212,6 +212,7 @@
     
                     if (body != undefined){
                         let command = undefined;
+                        let fallback_command = false;
                         try{
                             //const localHost = process.env.HOST || "localhost"; // "localhost" is the default if LOCAL_HOST is not set
                             const res = await fetch(`https://scrape_anything:3000/process`, {
@@ -223,14 +224,16 @@
                             });
                             if (res.status != 200) {
                             // Handle the not 200 error case here
-                            errorEl.textContent = `Internal Server Error ${e.message}`;
+                            error_data = await res.json();
+                            errorEl.textContent = `Internal Server Error: ${error_data.error_message}`;
                             } else {
                             // If the response is not a 500 error, proceed as normal
                             command = await res.json();
                             }
                         } catch (e) {
                             command = {"script": "server_fail",'tool_input':{}}
-                            errorEl.textContent  = `Calling backend failed, Error: ${e.message}.`;
+                            errorEl.textContent  = `Server didn't responded.`;
+                            fallback_command = true;
                         }
                         
                         if (command != undefined){
@@ -242,22 +245,25 @@
                                     script: command.script,
                                     args: command.tool_input, 
                                 }).then(
-                                function(response) {
-                                    body = JSON.stringify({
-                                        "execution_status":response,
-                                        "session_id":session_id,
-                                    })
-                                    fetch(`https://scrape_anything:3000/status`, {
-                                            method: "POST",
-                                            headers: {
-                                            "Content-Type": "application/json",
-                                            },
-                                            body
-                                        }).then((reponse) => {
-                                             console.log("reported.")
-                                    }).catch(error => {
-                                        console.error("failed to report")
-                                    });
+                                    function(response) {
+
+                                    if (!fallback_command){
+                                        body = JSON.stringify({
+                                            "execution_status":response['execution_status'],
+                                            "message":response['message'],
+                                            "session_id":session_id,
+                                        })
+                                        fetch(`https://scrape_anything:3000/status`, {
+                                                method: "POST",
+                                                headers: {
+                                                "Content-Type": "application/json",
+                                                },
+                                                body
+                                        }).catch((err) => {
+                                            console.error("Failed to reported status "+err)
+                                        });
+                                           
+                                    }
                             });
                             } catch (e){
                                 errorEl.textContent  = `Executing guidance failed, Error: ${e.message}.`;

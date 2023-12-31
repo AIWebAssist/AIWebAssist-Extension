@@ -9,9 +9,24 @@ async function main(req) {
     //  present the user a guidance 
     console.log("Running command script: "+req.script+" with args: "+JSON.stringify(req.args));
     return execute_function(req.script,req.args).then(response => {
-      console.log("Response from script " + req.script + " execution status: " + response);
-
-      return response;
+        // if there is not message that means the executuin was successful
+        if (typeof response === 'undefined') {
+          return {
+            "execution_status":true,
+            "message": "successful"
+          };
+        }
+        // if there is a message return it
+        return {
+          "execution_status":false,
+          "message": response
+        };
+    }).catch(req => {
+        // if there is execption, catch it and report it back.
+        return  {
+          "execution_status":false,
+          "message": "failed to execute "+req
+        }; 
     });
     
   } else if (req.message === "extract") {
@@ -22,7 +37,7 @@ async function main(req) {
         console.log("Response from script " + req.script + " is: " + response);
         if (typeof response === 'undefined') {
           console.error("Response from script"+req.script+" is undefined.");
-          response = "MISSING"
+          response = "data is failed to extract"
         }
         return response;
       });

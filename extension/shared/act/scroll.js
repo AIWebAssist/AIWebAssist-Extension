@@ -8,7 +8,7 @@ function scroll_down(){
 
     // Scroll down the web page
     window.scrollBy(0, scrollDistance);
-    return true;
+    return undefined;
 
 }
 
@@ -21,7 +21,7 @@ function scroll_up(){
 
     // Scroll up the web page
     window.scrollBy(0, -scrollDistance);
-    return true;
+    return undefined;
 
 }
 
@@ -35,7 +35,7 @@ function scroll_right(){
 
     // Scroll the web page to the right
     window.scrollBy(scrollDistance, 0);
-    return true;
+    return undefined;
 
 }
 
@@ -49,7 +49,7 @@ function scroll_left(){
 
     // Scroll the web page to the left
     window.scrollBy(-scrollDistance, 0);
-    return true;
+    return undefined;
 
 }
 
