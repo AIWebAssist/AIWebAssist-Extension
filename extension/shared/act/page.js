@@ -1,6 +1,6 @@
 function refresh(){
     location.reload();
-    return true;
+    return undefined;
 
 }
 
@@ -10,7 +10,7 @@ function go_back(){
     } catch (error){
         return "failed to back "+error
     }
-    return true;
+    return undefined;
 
 }
 
@@ -24,7 +24,7 @@ function move_to_url(url){
     if (window.location.href !== url){
         return "new url is not "+url;
     }
-    return true;
+    return undefined;
 
 }
 
