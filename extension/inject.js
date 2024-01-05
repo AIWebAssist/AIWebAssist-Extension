@@ -33,11 +33,11 @@
         }
 
         async function pop_menu(){
-            const circleRect = circle.getBoundingClientRect();
+                const circleRect = circle.getBoundingClientRect();
                 const popupWidth = 300; // Adjust this width as needed
                 const offsetHeight = 100;
-                const popupX = Math.min(circleRect.right + 10, window.innerWidth - popupWidth - 40);
-                const popupY = Math.min(circleRect.top, window.innerHeight - offsetHeight - 40);
+                const popupX = Math.min(circleRect.right + 40, window.innerWidth - popupWidth - 50 );
+                const popupY = Math.min(circleRect.top, window.innerHeight - offsetHeight - 50);
             
     
                 // Step 4: Create and append the pop-up menu
@@ -46,19 +46,19 @@
                     <!-- Close button -->
                     <button id="closeButton" style="position: absolute; top: 5px; right: 5px; cursor: pointer;">X</button>
             
-                    <form id="objective-form">
-                        <label for="objective">What you would like to do?</label>
-                        <br>
-                        <textarea id="objective"></textarea>
-                        <button type="submit" id="submit">Submit</button>
-                    </form>
-            
-                    <label class="switch">
-                        <input type="checkbox" id="myCheckbox">
-                        <span class="slider round"></span>
-                        <span id="checkboxText">Guide me only</span> 
-                    </label>
-                    <div id="error"></div>
+                <form id="objective-form" style="display: flex; flex-direction: column;">
+                    <label for="objective">What you would like to do?</label>
+                    <textarea id="objective" style="margin-bottom: 8px;"></textarea>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <button type="submit" id="submit" style="background-color: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
+                        <label class="switch" style="margin-left: 8px;">
+                            <input type="checkbox" id="myCheckbox">
+                            <span class="slider round"></span>
+                            <span id="checkboxText">Act on my behalf</span> 
+                        </label>
+                    </div>
+                </form>
+                <div id="error"></div>
                 </div>
                 `;
                 popup = document.createElement('div');
@@ -112,20 +112,13 @@
                 const storedIsChecked = await getTabStorage(session_id,"is_active",false);
 
                 active.checked = storedIsChecked || false;
-                if (storedIsChecked) {
-                    checkboxText.textContent = "Taking Action";
-                } else {
-                    checkboxText.textContent = "Guide me only";
-                }
                 
                 const storedObjective = await getTabStorage(session_id,"objective","");
                 objectiveInput.value = storedObjective || "";
                 active.addEventListener("change", async function() {
                     if (active.checked) {
-                        checkboxText.textContent = "Taking Action";
                         await setTabStorage(session_id,"is_active", true);
                     } else {
-                        checkboxText.textContent = "Guide me only";
                         await setTabStorage(session_id,"is_active", false);
                     }
                     
@@ -212,6 +205,7 @@
     
                     if (body != undefined){
                         let command = undefined;
+                        let fallback_command = false;
                         try{
                             //const localHost = process.env.HOST || "localhost"; // "localhost" is the default if LOCAL_HOST is not set
                             const res = await fetch(`https://scrape_anything:3000/process`, {
@@ -223,14 +217,16 @@
                             });
                             if (res.status != 200) {
                             // Handle the not 200 error case here
-                            errorEl.textContent = `Internal Server Error ${e.message}`;
+                            error_data = await res.json();
+                            errorEl.textContent = `Internal Server Error: ${error_data.error_message}`;
                             } else {
                             // If the response is not a 500 error, proceed as normal
                             command = await res.json();
                             }
                         } catch (e) {
                             command = {"script": "server_fail",'tool_input':{}}
-                            errorEl.textContent  = `Calling backend failed, Error: ${e.message}.`;
+                            errorEl.textContent  = `Server didn't responded.`;
+                            fallback_command = true;
                         }
                         
                         if (command != undefined){
@@ -242,22 +238,25 @@
                                     script: command.script,
                                     args: command.tool_input, 
                                 }).then(
-                                function(response) {
-                                    body = JSON.stringify({
-                                        "execution_status":response,
-                                        "session_id":session_id,
-                                    })
-                                    fetch(`https://scrape_anything:3000/status`, {
-                                            method: "POST",
-                                            headers: {
-                                            "Content-Type": "application/json",
-                                            },
-                                            body
-                                        }).then((reponse) => {
-                                             console.log("reported.")
-                                    }).catch(error => {
-                                        console.error("failed to report")
-                                    });
+                                    function(response) {
+
+                                    if (!fallback_command){
+                                        body = JSON.stringify({
+                                            "execution_status":response['execution_status'],
+                                            "message":response['message'],
+                                            "session_id":session_id,
+                                        })
+                                        fetch(`https://scrape_anything:3000/status`, {
+                                                method: "POST",
+                                                headers: {
+                                                "Content-Type": "application/json",
+                                                },
+                                                body
+                                        }).catch((err) => {
+                                            console.error("Failed to reported status "+err)
+                                        });
+                                           
+                                    }
                             });
                             } catch (e){
                                 errorEl.textContent  = `Executing guidance failed, Error: ${e.message}.`;
