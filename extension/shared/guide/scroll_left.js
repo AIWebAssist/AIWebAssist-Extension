@@ -40,5 +40,5 @@ export default  function point_scroll_left(){
 
     // Set a timeout to remove the indicator
     setTimeout(removeIndicator, 3000); // Adjust the delay as needed
-    return true;
+    return undefined;
 };

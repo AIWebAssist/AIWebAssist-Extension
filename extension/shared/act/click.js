@@ -15,7 +15,7 @@ function click_on_coordinates(x,y){
     } catch (error) {
         return "element click failed: "+error
     }
-    return true;
+    return undefined;
 };
 
 function click_on_coordinates_and_text(x,y,text){
@@ -23,7 +23,7 @@ function click_on_coordinates_and_text(x,y,text){
 
     var msg = click_on_coordinates(x, y);
 
-    if (msg !== true){
+    if (msg !== undefined){
         return msg;
     }
 
@@ -56,41 +56,39 @@ function click_on_coordinates_and_text(x,y,text){
     } catch (error){
         return "element enter text failed: "+error
     }
-    return true;
+    return undefined;
 
 };
 
 
 
 function keyborad_action(text){
-    activeElement = document.activeElement
-    if (activeElement == undefined){
-        return false;
+    if (document.activeElement !== undefined){ 
+        if (text.toLowerCase() === "esc") {
+            // For "esc" key press
+            var event = new KeyboardEvent('keydown', {
+                key: 'Escape',
+                code: 'Escape',
+                bubbles: true,
+                cancelable: true,
+            });
+            document.activeElement.dispatchEvent(event);
+        } else if (text.toLowerCase() === "enter") {
+            // For "enter" key press
+            var event = new KeyboardEvent('keydown', {
+                key: 'Enter',
+                code: 'Enter',
+                bubbles: true,
+                cancelable: true,
+            });
+            
+            document.activeElement.dispatchEvent(event);
+        } else {
+            return "no such key "+text;
+        }
     }
-    if (text.toLowerCase() === "esc") {
-        // For "esc" key press
-        var event = new KeyboardEvent('keydown', {
-            key: 'Escape',
-            code: 'Escape',
-            bubbles: true,
-            cancelable: true,
-          });
-        activeElement.dispatchEvent(event);
-    } else if (text.toLowerCase() === "enter") {
-        // For "enter" key press
-        var event = new KeyboardEvent('keydown', {
-            key: 'Enter',
-            code: 'Enter',
-            bubbles: true,
-            cancelable: true,
-          });
-          
-        activeElement.dispatchEvent(event);
-    } else {
-        return false;
-    }
-
-    return true;
+    
+    return undefined;
 }
 
 export {click_on_coordinates,click_on_coordinates_and_text,keyborad_action};

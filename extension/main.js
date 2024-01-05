@@ -185,7 +185,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 args: command.tool_input, 
               },
               function(response) {
-
+                if  (response == false){
+                  errorEl.textContent  = `Executing guidance failed, Error: ${e.message}.`;
+                }
                 body = JSON.stringify({
                   "execution_status":response,
                   "session_id":tabId,
