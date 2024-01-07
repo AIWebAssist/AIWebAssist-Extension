@@ -9,22 +9,22 @@ import show_text from './guide/show_text.js'
 async function call_guide(function_name,args){
     console.log("calling guide.")
     if (function_name == "back"){
-        return show_text("Please go back a page"); 
+        return show_text("Please go back a page."); 
     }
     else if (function_name == "refresh"){
-        return show_text("Please refresh the page")
+        return show_text("You should refresh the webpage,\n you can use the refresh button.")
     }
     else if (function_name == "click_coordinates_add_text"){
-        return draw_arrow(args.x,args.y,"enter '"+args.text+"' here")
+        return draw_arrow(args.x,args.y,"You should enter '"+args.text+"' here.")
     }
     else if (function_name == "keyborad_action"){
-        return draw_arrow("please hit "+args.text)
+        return show_text("You should press the '"+args.key +"' key")
     }
     else if (function_name == "click_coordinates"){
-        return draw_arrow(args.x,args.y,"please click here")
+        return draw_arrow(args.x,args.y,"You should click here.")
     }
     else if (function_name == "go_to_url"){
-        return go_to_url(args.text)
+        return go_to_url("Use the bar above to go to: "+args.text)
     }
     else if (function_name == "scroll_down"){
         return point_scroll_down()
@@ -42,6 +42,9 @@ async function call_guide(function_name,args){
         return show_text("Service is down.")
     }
     else if (function_name == "show_guidance"){
+        return show_text(args.message)
+    }
+    else if (function_name == "show_final_guidance"){
         return show_text(args.message)
     }
     else{
@@ -100,7 +103,7 @@ async function call_act(function_name,args){
         return click_on_coordinates_and_text(args.x,args.y,args.text)
     }
     else if (function_name == "keyborad_action"){
-        return keyborad_action(args.text)
+        return keyborad_action(args.key)
     }
     else if (function_name == "click_coordinates"){
         return click_on_coordinates(args.x,args.y)
@@ -124,6 +127,9 @@ async function call_act(function_name,args){
         return show_text("Service is down.")
     }
     else if (function_name == "show_guidance"){
+        return show_text(args.message)
+    }
+    else if (function_name == "show_final_guidance"){
         return show_text(args.message)
     }
     else{

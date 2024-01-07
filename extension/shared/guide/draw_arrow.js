@@ -1,23 +1,38 @@
-export default function draw_arrow(text,x,y){
+export default function draw_arrow(x, y,text) {
+    // Get the target element based on the provided coordinates
+    // Get the target element based on the provided coordinates
+    const targetElement = document.elementFromPoint(x, y);
 
-    // Create the scroll indicator container element
-    const indicatorContainer = document.createElement('div');
-    indicatorContainer.style.position = 'fixed';
-    indicatorContainer.style.top = y+`px`; // Use the provided y coordinate
-    indicatorContainer.style.left = x+`px`; // Use the provided x coordinate
-    indicatorContainer.style.transform = 'translate(-50%, -50%)'; // Center the container
-    indicatorContainer.style.textAlign = 'center';
-    indicatorContainer.style.zIndex = 2147483647;
+    // Check if the target element exists
+    if (!targetElement) {
+        console.error('No element found at the provided coordinates.');
+        return;
+    }
 
-    // Create the arrow element for scrolling right
-    const arrow = document.createElement('div');
-    arrow.style.width = '30px';
-    arrow.style.height = '30px';
-    arrow.style.border = 'solid #fff';
-    arrow.style.borderWidth = '3px 3px 0 0'; // Adjust border to point right
-    arrow.style.transform = 'rotate(45deg)'; // Rotate to point right
-    arrow.style.display = 'inline-block';
-    arrow.style.marginLeft = '10px'; // Adjust margin for spacing
+    // Get the position of the target element
+    const rect = targetElement.getBoundingClientRect();
+    const targetX = rect.left + window.scrollX;
+    const targetY = rect.top + window.scrollY;
+
+    // Create the container for the glow effect
+    const glowContainer = document.createElement('div');
+    glowContainer.style.position = 'fixed';
+    glowContainer.style.top = targetY + 'px'; // Use the target element's y coordinate
+    glowContainer.style.left = targetX + 'px'; // Use the target element's x coordinate
+    glowContainer.style.width = rect.width + 'px';
+    glowContainer.style.height = rect.height + 'px';
+    glowContainer.style.zIndex = 2147483647;
+
+    // Add glow effect surrounding the entire glowContainer
+    glowContainer.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.8)'; // Adjust the glow color and intensity
+
+    // Create the container for the text
+    const textContainer = document.createElement('div');
+    textContainer.style.position = 'absolute'; // Set to absolute to position textContainer relative to glowContainer
+    textContainer.style.top = '100%'; // Position textContainer below the glowContainer
+    textContainer.style.left = '50%'; // Center textContainer relative to glowContainer
+    textContainer.style.transform = 'translateX(-50%)'; // Center textContainer horizontally
+    textContainer.style.zIndex = '1'; // Set a higher z-index to position the text above the glow
 
     // Create the text element
     const text_field = document.createElement('p');
@@ -25,21 +40,20 @@ export default function draw_arrow(text,x,y){
     text_field.style.fontSize = '16px';
     text_field.textContent = text;
 
-    // Add the indicator elements to the container
-    indicatorContainer.appendChild(arrow);
-    indicatorContainer.appendChild(text_field);
+    // Add the text element to the textContainer
+    textContainer.appendChild(text_field);
 
-    // Add the indicator to the document body
-    document.body.appendChild(indicatorContainer);
+    // Add the textContainer to the glowContainer
+    glowContainer.appendChild(textContainer);
 
-    // Function to remove the indicator after a certain delay (e.g., 3 seconds)
-    function removeIndicator() {
-        indicatorContainer.style.display = 'none';
+    // Add the glowContainer to the document body
+    document.body.appendChild(glowContainer);
+
+    // Function to remove the glowContainer after a certain delay (e.g., 3 seconds)
+    function removeGlow() {
+        glowContainer.style.display = 'none';
     }
 
-
-    indicatorContainer.style.top = y+`px`; // Use the provided y coordinate
-    indicatorContainer.style.left = x+`px`; // Use the provided x coordinate
-    setTimeout(removeIndicator, 3000); // Adjust the delay as needed
+    setTimeout(removeGlow, 3000); // Adjust the delay as needed
     return undefined;
 };

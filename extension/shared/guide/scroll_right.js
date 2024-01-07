@@ -1,38 +1,42 @@
-export default  function point_scroll_right(){
-    // Calculate the size for arrow and text
-    const oneSixthOfViewportHeight = (window.innerHeight / 6) + 'px';
+export default function point_scroll_left() {
+    const oneTwelfthOfViewportHeight = window.innerHeight / 12 + 'px'; // Half the size of the arrow
 
     // Create the scroll indicator container element
     const indicatorContainer = document.createElement('div');
     indicatorContainer.style.position = 'fixed';
-    indicatorContainer.style.top = 3*(window.innerHeight / 6) + 'px'; // Position at 1/6 of the viewport height
-    indicatorContainer.style.right = (window.innerHeight / 6) +'px'; // Position on the right side
-    indicatorContainer.style.transform = 'translateY(-50%)';
+    indicatorContainer.style.left = '50%'; // Center horizontally
+    indicatorContainer.style.top = '50%'; // Center vertically
+    indicatorContainer.style.transform = 'translate(-50%, -50%)'; // Center both horizontally and vertically
     indicatorContainer.style.textAlign = 'center';
     indicatorContainer.style.zIndex = 2147483647;
-
-    // Create the arrow element for scrolling right
-    const arrow = document.createElement('div');
-    arrow.style.width = oneSixthOfViewportHeight; // 1/6 of the screen height
-    arrow.style.height = oneSixthOfViewportHeight; // 1/6 of the screen height
-    arrow.style.border = 'solid #666666';
-    arrow.style.borderWidth = '0 ' + oneSixthOfViewportHeight + ' ' + oneSixthOfViewportHeight + ' 0'; // 1/6 of the screen height
-    arrow.style.transform = 'rotate(-50deg)'; // Rotate to point right
-    arrow.style.display = 'inline-block';
-    arrow.style.marginLeft = '10px'; // Adjust margin for spacing
 
     // Create the text element
     const text = document.createElement('p');
     text.style.color = '#666666';
-    text.style.fontSize = oneSixthOfViewportHeight; // 1/6 of the screen height
-    text.textContent = 'Scroll Right';
+    text.style.fontSize = oneTwelfthOfViewportHeight; // Half the size of the arrow
+    text.textContent = 'Scroll Left';
 
-    // Add the indicator elements to the container
-    indicatorContainer.appendChild(arrow);
+    // Create the arrow element for scrolling left
+    const arrow = document.createElement('div');
+    arrow.style.width = '0';
+    arrow.style.height = '0';
+    arrow.style.borderTop = `${oneTwelfthOfViewportHeight} solid transparent`;
+    arrow.style.borderBottom = `${oneTwelfthOfViewportHeight} solid transparent`;
+    arrow.style.borderLeft = `${oneTwelfthOfViewportHeight} solid #666666`; // Change from borderRight to borderLeft
+    arrow.style.display = 'inline-block';
+    arrow.style.marginLeft = '10px'; // Adjust the margin to center the gap between text and arrow
+
+    // Add the indicator elements to the container (arrow after text)
     indicatorContainer.appendChild(text);
+    indicatorContainer.appendChild(arrow);
 
     // Add the indicator to the document body
     document.body.appendChild(indicatorContainer);
+
+    // Add inline CSS for animation
+    arrow.style.animation = `
+        scrollLeft 1s infinite
+    `;
 
     // Function to remove the indicator after a certain delay (e.g., 3 seconds)
     function removeIndicator() {
@@ -41,5 +45,23 @@ export default  function point_scroll_right(){
 
     // Set a timeout to remove the indicator
     setTimeout(removeIndicator, 3000); // Adjust the delay as needed
+
+    // Inline CSS for animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes scrollLeft {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(-10px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
     return undefined;
-};
+}
+
