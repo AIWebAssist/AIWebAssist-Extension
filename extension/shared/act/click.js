@@ -19,7 +19,6 @@ function click_on_coordinates(x,y){
 };
 
 function click_on_coordinates_and_text(x,y,text){
-    console.log("x="+x+",y="+y+",text="+text)
 
     var msg = click_on_coordinates(x, y);
 
@@ -39,7 +38,7 @@ function click_on_coordinates_and_text(x,y,text){
         element.tagName !== 'INPUT' &&
         element.tagName !== 'TEXTAREA' &&
         !(element.isContentEditable && element.getAttribute('contenteditable') !== 'false')){
-        console.log( "element in not reciving input");
+        //console.log( "element in not reciving input");
     }
     try{
         var instr = '';

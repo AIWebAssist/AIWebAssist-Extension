@@ -1,38 +1,46 @@
-export default  function point_scroll_up(){
-    // Calculate the height for arrow and text
-    const oneThirdOfViewportHeight = (window.innerHeight / 6) + 'px';
+export default function point_scroll_up() {
+    // Calculate the size for a smaller arrow and text
+    const oneTenthOfViewportHeight = (window.innerHeight / 10) + 'px';
+
+    // Calculate the position for the middle of the top half of the screen
+    const middleTopHalf = (window.innerHeight / 4) + 'px';
 
     // Create the scroll indicator container element
     const indicatorContainer = document.createElement('div');
     indicatorContainer.style.position = 'fixed';
-    indicatorContainer.style.top = (window.innerHeight / 6)+'px'; // Change 'bottom' to 'top'
+    indicatorContainer.style.top = middleTopHalf;
     indicatorContainer.style.left = '50%';
     indicatorContainer.style.transform = 'translateX(-50%)';
     indicatorContainer.style.textAlign = 'center';
     indicatorContainer.style.zIndex = 2147483647;
 
-    // Create the arrow element for scrolling up
+    // Create the smaller arrow element for scrolling up
     const arrow = document.createElement('div');
-    arrow.style.width = oneThirdOfViewportHeight; // 1/3 of the screen height
-    arrow.style.height = oneThirdOfViewportHeight; // 1/3 of the screen height
-    arrow.style.border = 'solid #666666';
-    arrow.style.borderWidth = '0 ' + oneThirdOfViewportHeight + ' ' + oneThirdOfViewportHeight + ' 0'; // 1/3 of the screen height
-    arrow.style.transform = 'rotate(-135deg)';
+    arrow.style.width = '0';
+    arrow.style.height = '0';
+    arrow.style.borderLeft = `${oneTenthOfViewportHeight} solid transparent`;
+    arrow.style.borderRight = `${oneTenthOfViewportHeight} solid transparent`;
+    arrow.style.borderBottom = `${oneTenthOfViewportHeight} solid #666666`;
     arrow.style.display = 'inline-block';
-    arrow.style.marginBottom = '10px';
+    arrow.style.marginBottom = '2px';
 
-    // Create the text element
+    // Create the smaller text element
     const text = document.createElement('p');
     text.style.color = '#666666';
-    text.style.fontSize = oneThirdOfViewportHeight; // 1/3 of the screen height
+    text.style.fontSize = oneTenthOfViewportHeight; // 1/10 of the screen height
     text.textContent = 'Scroll Up';
 
-    // Add the indicator elements to the container
+    // Add the smaller indicator elements to the container
     indicatorContainer.appendChild(arrow);
     indicatorContainer.appendChild(text);
 
     // Add the indicator to the document body
     document.body.appendChild(indicatorContainer);
+
+    // Add inline CSS for animation
+    arrow.style.animation = `
+        scrollUp 1s infinite
+    `;
 
     // Function to remove the indicator after a certain delay (e.g., 3 seconds)
     function removeIndicator() {
@@ -41,5 +49,22 @@ export default  function point_scroll_up(){
 
     // Set a timeout to remove the indicator
     setTimeout(removeIndicator, 3000); // Adjust the delay as needed
+
+    // Inline CSS for animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes scrollUp {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
     return undefined;
 }

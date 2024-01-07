@@ -7,7 +7,7 @@ async function main(req) {
       execute_function = call_act
     }
     //  present the user a guidance 
-    console.log("Running command script: "+req.script+" with args: "+JSON.stringify(req.args));
+    //console.log("Running command script: "+req.script+" with args: "+JSON.stringify(req.args));
     return execute_function(req.script,req.args).then(response => {
         // if there is not message that means the executuin was successful
         if (typeof response === 'undefined') {
@@ -32,11 +32,11 @@ async function main(req) {
   } else if (req.message === "extract") {
 
     // get information about the screen
-    console.log("Running extraction script: "+req.script+" with args: "+JSON.stringify(req.args));
+    //console.log("Running extraction script: "+req.script+" with args: "+JSON.stringify(req.args));
     return call_extract(req.script).then(response => {
-        console.log("Response from script " + req.script + " is: " + response);
+        //console.log("Response from script " + req.script + " is: " + response);
         if (typeof response === 'undefined') {
-          console.error("Response from script"+req.script+" is undefined.");
+          //console.error("Response from script"+req.script+" is undefined.");
           response = "data is failed to extract"
         }
         return response;
