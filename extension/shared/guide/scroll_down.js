@@ -1,38 +1,43 @@
-export default function point_scroll_down(){
+export default function point_scroll_down() {
     // Calculate the size for arrow and text
-    const oneSixthOfViewportHeight = (window.innerHeight / 6) + 'px';
+    const oneTenthOfViewportHeight = window.innerHeight / 10 + 'px'; // Adjusted to 1/10 of the screen height
 
     // Create the scroll indicator container element
     const indicatorContainer = document.createElement('div');
     indicatorContainer.style.position = 'fixed';
-    indicatorContainer.style.bottom = '20px';
+    indicatorContainer.style.bottom = '50px'; // Adjust the bottom position to move the indicator higher
     indicatorContainer.style.left = '50%';
     indicatorContainer.style.transform = 'translateX(-50%)';
     indicatorContainer.style.textAlign = 'center';
     indicatorContainer.style.zIndex = 2147483647;
 
-    // Create the arrow element for scrolling down
-    const arrow = document.createElement('div');
-    arrow.style.width = oneSixthOfViewportHeight; // 1/6 of the screen height
-    arrow.style.height = oneSixthOfViewportHeight; // 1/6 of the screen height
-    arrow.style.border = 'solid #666666';
-    arrow.style.borderWidth = '0 ' + oneSixthOfViewportHeight + ' ' + oneSixthOfViewportHeight + ' 0'; // 1/6 of the screen height
-    arrow.style.transform = 'rotate(45deg)';
-    arrow.style.display = 'inline-block';
-    arrow.style.marginBottom = '10px';
-
     // Create the text element
     const text = document.createElement('p');
     text.style.color = '#666666';
-    text.style.fontSize = oneSixthOfViewportHeight; // 1/6 of the screen height
-    text.textContent = 'Scroll Down';
+    text.style.fontSize = oneTenthOfViewportHeight; // 1/10 of the screen height
+    text.textContent = 'please scroll down';
 
-    // Add the indicator elements to the container
-    indicatorContainer.appendChild(arrow);
+    // Create the arrow element for scrolling down
+    const arrow = document.createElement('div');
+    arrow.style.width = '0';
+    arrow.style.height = '0';
+    arrow.style.borderLeft = `${oneTenthOfViewportHeight} solid transparent`; // Adjusted to 1/10 of the screen height
+    arrow.style.borderRight = `${oneTenthOfViewportHeight} solid transparent`; // Adjusted to 1/10 of the screen height
+    arrow.style.borderTop = `${oneTenthOfViewportHeight} solid #666666`; // Adjusted to 1/10 of the screen height
+    arrow.style.display = 'inline-block';
+    arrow.style.marginTop = '5px'; // Adjust margin to center the gap between text and arrow, reduced for spacing
+
+    // Add the indicator elements to the container (arrow after text)
     indicatorContainer.appendChild(text);
+    indicatorContainer.appendChild(arrow);
 
     // Add the indicator to the document body
     document.body.appendChild(indicatorContainer);
+
+    // Add inline CSS for animation
+    arrow.style.animation = `
+        scrollDown 1s infinite
+    `;
 
     // Function to remove the indicator after a certain delay (e.g., 3 seconds)
     function removeIndicator() {
@@ -41,5 +46,21 @@ export default function point_scroll_down(){
 
     // Set a timeout to remove the indicator
     setTimeout(removeIndicator, 3000); // Adjust the delay as needed
+    // Inline CSS for animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes scrollDown {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(5px); // Reduced for a smaller movement
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
     return undefined;
 }

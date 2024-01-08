@@ -131,7 +131,7 @@
                 });
     
                 form.addEventListener("submit", async (e) => {
-                    console.log('submit event dispatched');
+                    //console.log('submit event dispatched');
                     e.preventDefault();
                     submitButton.setAttribute("disabled", true);
                     errorEl.textContent = ""
@@ -177,7 +177,7 @@
                         });
     
                         console.log("sending request to the server.")
-                        console.log(screenshotImage)
+                        // console.log(screenshotImage)
                         body = JSON.stringify({
                             "viewpointscroll":viewpointscroll,
                             "viewportHeight":viewportHeight,
@@ -192,7 +192,7 @@
                             "screenshot":screenshotImage,
                         });
                         } catch (e) {
-                            console.log(e.message)
+                            console.error(e.message)
     
                             if (e.message.includes("Could not establish connection. Receiving end does not exist.")){
                             errorEl.textContent  = `Please refresh the selected tab before continuing.`;
