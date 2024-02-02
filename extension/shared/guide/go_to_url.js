@@ -66,5 +66,8 @@ export default function go_to_url(url) {
         }
     `;
     document.head.appendChild(style);
-    return undefined;
+    return {
+        execution_status: true,
+        data:{}
+    };
 }

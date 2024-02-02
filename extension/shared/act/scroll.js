@@ -8,7 +8,15 @@ function scroll_down(){
 
     // Scroll down the web page
     window.scrollBy(0, scrollDistance);
-    return undefined;
+    return {
+        execution_status: true,
+        data:{
+            directions: 'down',
+            scrolledDistance: scrollDistance,
+            viewpointscroll: window.pageYOffset || document.documentElement.scrollTop,
+            viewportHeight: window.innerheight || document.documentElement.clientHeight,
+        }
+    };
 
 }
 
@@ -21,7 +29,15 @@ function scroll_up(){
 
     // Scroll up the web page
     window.scrollBy(0, -scrollDistance);
-    return undefined;
+    return {
+        execution_status: true,
+        data:{
+            directions: 'up',
+            scrolledDistance: -scrollDistance,
+            viewpointscroll: window.pageYOffset || document.documentElement.scrollTop,
+            viewportHeight: window.innerheight || document.documentElement.clientHeight,
+        }
+    };
 
 }
 
@@ -35,7 +51,15 @@ function scroll_right(){
 
     // Scroll the web page to the right
     window.scrollBy(scrollDistance, 0);
-    return undefined;
+    return {
+        execution_status: true,
+        data:{
+            directions: 'right',
+            scrolledDistance: scrollDistance,
+            viewpointscroll: window.pageYOffset || document.documentElement.scrollTop,
+            viewportHeight: window.innerheight || document.documentElement.clientHeight,
+        }
+    };
 
 }
 
@@ -49,7 +73,15 @@ function scroll_left(){
 
     // Scroll the web page to the left
     window.scrollBy(-scrollDistance, 0);
-    return undefined;
+    return {
+        execution_status: true,
+        data:{
+            directions: 'left',
+            scrolledDistance: -scrollDistance,
+            viewpointscroll: window.pageYOffset || document.documentElement.scrollTop,
+            viewportHeight: window.innerheight || document.documentElement.clientHeight,
+        }
+    };
 
 }
 

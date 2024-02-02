@@ -1,6 +1,11 @@
 function refresh(){
     location.reload();
-    return undefined;
+    return {
+        execution_status: true,
+        data:{
+            url:window.location.href
+        }
+    };
 
 }
 
@@ -8,9 +13,17 @@ function go_back(){
     try{
         window.history.back();
     } catch (error){
-        return "failed to back "+error
+        return {
+            execution_status: false,
+            message: "failed to back "+error
+        };   
     }
-    return undefined;
+    return {
+        execution_status: true,
+        data:{
+            url:window.location.href
+        }
+    };
 
 }
 
@@ -22,9 +35,17 @@ function move_to_url(url){
     window.location.href = url;
 
     if (window.location.href !== url){
-        return "new url is not "+url;
+        return {
+            execution_status: false,
+            url:window.location.href
+        };
     }
-    return undefined;
+    return {
+        execution_status: true,
+        data:{
+            url:window.location.href
+        }
+    };
 
 }
 
