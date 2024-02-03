@@ -36,5 +36,8 @@ export default function show_text(text){
 
     // Attach the showRefreshAnimation function to the beforeunload event
     setTimeout(showRefreshAnimation, 3000);
-    return undefined;
+    return {
+        execution_status: true,
+        data:{}
+    };
 }

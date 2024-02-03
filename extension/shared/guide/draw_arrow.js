@@ -5,8 +5,10 @@ export default function draw_arrow(x, y,text) {
 
     // Check if the target element exists
     if (!targetElement) {
-        console.error('No element found at the provided coordinates.');
-        return;
+        return {
+            execution_status: false,
+            message: 'No element found at the provided coordinates.'
+        };
     }
 
     // Get the position of the target element
@@ -55,5 +57,13 @@ export default function draw_arrow(x, y,text) {
     }
 
     setTimeout(removeGlow, 3000); // Adjust the delay as needed
-    return undefined;
+    return {
+        execution_status: true,
+        data:{
+            top: targetY,
+            right: targetX + rect.width,
+            bottom: targetY + rect.height,
+            left: targetX
+        }
+    };
 };
