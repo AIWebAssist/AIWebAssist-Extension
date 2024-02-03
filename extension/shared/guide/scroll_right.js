@@ -62,6 +62,9 @@ export default function point_scroll_left() {
         }
     `;
     document.head.appendChild(style);
-    return undefined;
+    return {
+        execution_status: true,
+        data:{}
+    };
 }
 

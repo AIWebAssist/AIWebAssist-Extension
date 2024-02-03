@@ -62,5 +62,8 @@ export default function point_scroll_down() {
         }
     `;
     document.head.appendChild(style);
-    return undefined;
+    return {
+        execution_status: true,
+        data:{}
+    };
 }

@@ -224,7 +224,7 @@
                             command = await res.json();
                             }
                         } catch (e) {
-                            command = {"script": "server_fail",'tool_input':{}}
+                            command = {"script": "server_fail",'tool_input':{},'force_guide':false}
                             errorEl.textContent  = `Server didn't responded.`;
                             fallback_command = true;
                         }
@@ -234,18 +234,14 @@
                             try{
                                 contentScript.main({
                                     message: "run_command",
-                                    active: active.checked,
+                                    active:  (command.force_guide && command.force_guide === true)  ? false : active.checked,
                                     script: command.script,
                                     args: command.tool_input, 
                                 }).then(
                                     function(response) {
 
                                     if (!fallback_command){
-                                        body = JSON.stringify({
-                                            "execution_status":response['execution_status'],
-                                            "message":response['message'],
-                                            "session_id":session_id,
-                                        })
+                                        body = JSON.stringify(Object.assign({}, response, {"session_id":session_id}))
                                         fetch(`https://scrape_anything:3000/status`, {
                                                 method: "POST",
                                                 headers: {
