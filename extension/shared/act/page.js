@@ -37,7 +37,7 @@ function move_to_url(url){
     if (window.location.href !== url){
         return {
             execution_status: false,
-            url:window.location.href
+            message: "url miss-match "+window.location.href
         };
     }
     return {
