@@ -2,28 +2,46 @@ function click_on_coordinates(x,y){
     var element = document.elementFromPoint(x, y);
 
     if (element === undefined || element === null) {
-        return "element in this position is undefined."
+        return {
+            execution_status: false,
+            message:"element in this position is undefined."
+        };
     }
 
     if (element.style.display === 'none' || element.disabled) {
-        return "element is not clickable."
+        return {
+            execution_status: false,
+            message:"element is not clickable."
+        };
     }
 
     try{
         // Click on the element
         element.click();
     } catch (error) {
-        return "element click failed: "+error
+        return  {
+            execution_status: false,
+            message: "element click failed: "+error
+        }
     }
-    return undefined;
+    const rect = element.getBoundingClientRect();
+    return {
+        execution_status: true,
+        data:{
+            top: rect.top + window.scrollY,
+            right: rect.left + window.scrollX + rect.width,
+            bottom: rect.top + window.scrollY + rect.height,
+            left: rect.left + window.scrollX
+        }
+    };
 };
 
 function click_on_coordinates_and_text(x,y,text){
 
-    var msg = click_on_coordinates(x, y);
+    var status = click_on_coordinates(x, y);
 
-    if (msg !== undefined){
-        return msg;
+    if (status['execution_status'] == false){
+        return status;
     }
 
     // now, sent text
@@ -31,7 +49,10 @@ function click_on_coordinates_and_text(x,y,text){
     var element = document.elementFromPoint(x, y);
 
     if (element === undefined) {
-        return "element in this position is undefined."
+        return {
+            execution_status: false,
+            message:"element in this position is undefined."
+        };
     }
     
     if (
@@ -53,9 +74,16 @@ function click_on_coordinates_and_text(x,y,text){
         }      
             
     } catch (error){
-        return "element enter text failed: "+error
+        return {
+            execution_status: false,
+            message: "element enter text failed: "+error
+        };
     }
-    return undefined;
+   
+    return {
+        execution_status: true,
+        data:  Object.assign({}, status.data, {text:text})
+    };
 
 };
 
@@ -83,11 +111,19 @@ function keyborad_action(text){
             
             document.activeElement.dispatchEvent(event);
         } else {
-            return "no such key "+text;
+            return {
+                execution_status: false,
+                message: "no such key "+text
+            };
         }
     }
     
-    return undefined;
+    return {
+        execution_status: true,
+        data:{
+            text:text,
+        }
+    }
 }
 
 export {click_on_coordinates,click_on_coordinates_and_text,keyborad_action};

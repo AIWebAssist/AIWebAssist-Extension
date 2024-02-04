@@ -10,17 +10,7 @@ async function main(req) {
     //console.log("Running command script: "+req.script+" with args: "+JSON.stringify(req.args));
     return execute_function(req.script,req.args).then(response => {
         // if there is not message that means the executuin was successful
-        if (typeof response === 'undefined') {
-          return {
-            "execution_status":true,
-            "message": "successful"
-          };
-        }
-        // if there is a message return it
-        return {
-          "execution_status":false,
-          "message": response
-        };
+        return response;
     }).catch(req => {
         // if there is execption, catch it and report it back.
         return  {

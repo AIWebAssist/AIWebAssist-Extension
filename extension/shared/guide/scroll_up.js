@@ -66,5 +66,8 @@ export default function point_scroll_up() {
         }
     `;
     document.head.appendChild(style);
-    return undefined;
+    return {
+        execution_status: true,
+        data:{}
+    };
 }
