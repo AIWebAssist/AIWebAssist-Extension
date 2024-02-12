@@ -34,18 +34,20 @@ function move_to_url(url){
 
     window.location.href = url;
 
-    if (window.location.href !== url){
-        return {
-            execution_status: false,
-            message: "url miss-match "+window.location.href
-        };
-    }
-    return {
-        execution_status: true,
-        data:{
-            url:window.location.href
+    setTimeout(() => {
+        if (window.location.href !== url){
+            return {
+                execution_status: false,
+                message: "url miss-match "+window.location.href
+            };
         }
-    };
+        return {
+            execution_status: true,
+            data:{
+                url:window.location.href
+            }
+        };
+    }, 2000); // Adjust timeout duration as needed
 
 }
 
