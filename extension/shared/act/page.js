@@ -47,7 +47,7 @@ function move_to_url(url){
                 url:window.location.href
             }
         };
-    }, 1000); // Adjust timeout duration as needed
+    }, 2000); // Adjust timeout duration as needed
 
 }
 
