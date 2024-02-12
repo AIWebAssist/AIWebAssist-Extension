@@ -24,7 +24,7 @@ async function call_guide(function_name,args){
         return draw_arrow(args.x,args.y,"You should click here.")
     }
     else if (function_name == "go_to_url"){
-        return go_to_url("Use the bar above to go to: "+args.text)
+        return go_to_url("Use the bar above to go to: "+args.url)
     }
     else if (function_name == "scroll_down"){
         return point_scroll_down()
@@ -109,7 +109,7 @@ async function call_act(function_name,args){
         return click_on_coordinates(args.x,args.y)
     }
     else if (function_name == "go_to_url"){
-        return move_to_url(args.text)
+        return move_to_url(args.url)
     }
     else if (function_name == "scroll_down"){
         return scroll_down()
